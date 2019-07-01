@@ -1,0 +1,27 @@
+{
+  "name": "exoplatform-api-wrapper",
+  "version": "0.1.0",
+  "description": "A quick eXo Platform API wrapper",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node test/index.js"
+  },
+  "keywords": [
+    "eXo Platform",
+    "API wrapper"
+  ],
+  "author": "rigwild <contact@asauvage.fr> (https://asauvage.fr)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^12.0.10",
+    "dotenv": "^8.0.0",
+    "typescript": "^3.5.2"
+  }
+}
