@@ -4,24 +4,16 @@ import https, { RequestOptions } from 'https'
 import msgId from './msgId'
 
 class ExoplatformBot {
-  exoHostname: string
-  exoPath: string
-  exoSecureProtocol: string | undefined
-
-  username: string | null = null
-  password: string | null = null
+  private username: string | null = null
+  private password: string | null = null
 
   /**
    * Create a bot instance
    * @param exoHostname Hostname of the API (don't include protocol or path)
    * @param exoPath Path to the eXo REST API, `/rest` by default
-   * @param secureProtocol SSL protocol to use (don't set if you don't know what is it!)
+   * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what is it!)
    */
-  constructor(exoHostname: string, exoPath: string = '/rest', secureProtocol?: string) {
-    this.exoHostname = exoHostname
-    this.exoPath = exoPath
-    this.exoSecureProtocol = secureProtocol
-  }
+  constructor(public exoHostname: string, public exoPath: string = '/rest', public exoSecureProtocol?: string) { }
 
   /**
    * Make an API call to eXo Platform configured API.
@@ -33,9 +25,9 @@ class ExoplatformBot {
    */
   request(
     path: string,
-    body: object = {},
-    method: string = 'GET',
-    moreOptions?: object
+    body: object | null = null,
+    method: string = body ? 'POST' : 'GET',
+    moreOptions?: Partial<RequestOptions>
   ): Promise<{ body: object | string, response: IncomingMessage }> {
     return new Promise((resolve, reject) => {
       let options: RequestOptions = {
@@ -100,6 +92,18 @@ class ExoplatformBot {
   }
 
   /**
+   * Make an API call to eXo Platform configured API, but throws if not logged in..
+   * @param args Same as `this.request`
+   * @returns Same as `this.request`
+   * @throws {Error} `this.login` must be called before `this.loggedInRequest`
+   */
+  private async loggedInRequest(...args: Parameters<ExoplatformBot['request']>): ReturnType<ExoplatformBot['request']> {
+    if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
+
+    return this.request(...args);
+  }
+
+  /**
    * Post on a user's activity stream.
    * Must be your own profile.
    * @param userId Id of the targeted profile
@@ -108,11 +112,7 @@ class ExoplatformBot {
    * @throws Unknown user or no permission to post
    */
   async postUser(userId: string, message: string): Promise<object | string> {
-    if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
-
-    const uri = `/private/v1/social/users/${userId}/activities`
-    const res = await this.request(uri, { title: message }, 'POST')
-    return res.body
+    return (await this.loggedInRequest(`/private/v1/social/users/${userId}/activities`, { title: message })).body
   }
 
   /**
@@ -124,11 +124,7 @@ class ExoplatformBot {
    * @throws Unknown space or no permission to post
    */
   async postSpace(spaceId: string, message: string): Promise<object | string> {
-    if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
-
-    const uri = `/private/v1/social/spaces/${spaceId}/activities`
-    const res = await this.request(uri, { title: message }, 'POST')
-    return res.body
+    return (await this.loggedInRequest(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })).body
   }
 }
 
