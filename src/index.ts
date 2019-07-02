@@ -34,7 +34,7 @@ class ExoplatformBot {
   request(
     path: string,
     body: object | null = null,
-    method: string = 'GET',
+    method: string = body ? 'POST' : 'GET',
     moreOptions?: Partial<RequestOptions>
   ): Promise<{ body: object | string, response: IncomingMessage }> {
     return new Promise((resolve, reject) => {
@@ -111,7 +111,7 @@ class ExoplatformBot {
     if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
 
     const uri = `/private/v1/social/users/${userId}/activities`
-    const res = await this.request(uri, { title: message }, 'POST')
+    const res = await this.request(uri, { title: message })
     return res.body
   }
 
@@ -127,7 +127,7 @@ class ExoplatformBot {
     if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
 
     const uri = `/private/v1/social/spaces/${spaceId}/activities`
-    const res = await this.request(uri, { title: message }, 'POST')
+    const res = await this.request(uri, { title: message })
     return res.body
   }
 }
