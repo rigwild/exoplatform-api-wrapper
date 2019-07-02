@@ -10,14 +10,14 @@ class ExoplatformBot {
      * Create a bot instance
      * @param exoHostname Hostname of the API (don't include protocol or path)
      * @param exoPath Path to the eXo REST API, `/rest` by default
-     * @param secureProtocol SSL protocol to use (don't set if you don't know what is it!)
+     * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what is it!)
      */
-    constructor(exoHostname, exoPath = '/rest', secureProtocol) {
-        this.username = null;
-        this.password = null;
+    constructor(exoHostname, exoPath = '/rest', exoSecureProtocol) {
         this.exoHostname = exoHostname;
         this.exoPath = exoPath;
-        this.exoSecureProtocol = secureProtocol;
+        this.exoSecureProtocol = exoSecureProtocol;
+        this.username = null;
+        this.password = null;
     }
     /**
      * Make an API call to eXo Platform configured API.

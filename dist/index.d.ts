@@ -4,16 +4,16 @@ import { RequestOptions } from 'https';
 declare class ExoplatformBot {
     exoHostname: string;
     exoPath: string;
-    exoSecureProtocol: string | undefined;
-    username: string | null;
-    password: string | null;
+    exoSecureProtocol?: string | undefined;
+    private username;
+    private password;
     /**
      * Create a bot instance
      * @param exoHostname Hostname of the API (don't include protocol or path)
      * @param exoPath Path to the eXo REST API, `/rest` by default
-     * @param secureProtocol SSL protocol to use (don't set if you don't know what is it!)
+     * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what is it!)
      */
-    constructor(exoHostname: string, exoPath?: string, secureProtocol?: string);
+    constructor(exoHostname: string, exoPath?: string, exoSecureProtocol?: string | undefined);
     /**
      * Make an API call to eXo Platform configured API.
      * @param path Path to the API endpoint
