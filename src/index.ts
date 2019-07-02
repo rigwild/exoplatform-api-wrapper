@@ -100,6 +100,18 @@ class ExoplatformBot {
   }
 
   /**
+   * Make an API call to eXo Platform configured API, but throws if not logged in..
+   * @param args Same as `this.request`
+   * @returns Same as `this.request`
+   * @throws {Error} `this.login` must be called before `this.loggedInRequest`
+   */
+  private async loggedInRequest(...args: Parameters<ExoplatformBot['request']>): ReturnType<ExoplatformBot['request']> {
+    if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
+
+    return this.request(...args);
+  }
+
+  /**
    * Post on a user's activity stream.
    * Must be your own profile.
    * @param userId Id of the targeted profile
@@ -108,11 +120,7 @@ class ExoplatformBot {
    * @throws Unknown user or no permission to post
    */
   async postUser(userId: string, message: string): Promise<object | string> {
-    if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
-
-    const uri = `/private/v1/social/users/${userId}/activities`
-    const res = await this.request(uri, { title: message })
-    return res.body
+    return (await this.loggedInRequest(`/private/v1/social/users/${userId}/activities`, { title: message })).body
   }
 
   /**
@@ -124,11 +132,7 @@ class ExoplatformBot {
    * @throws Unknown space or no permission to post
    */
   async postSpace(spaceId: string, message: string): Promise<object | string> {
-    if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
-
-    const uri = `/private/v1/social/spaces/${spaceId}/activities`
-    const res = await this.request(uri, { title: message })
-    return res.body
+    return (await this.loggedInRequest(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })).body
   }
 }
 
