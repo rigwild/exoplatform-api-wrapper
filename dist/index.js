@@ -27,7 +27,7 @@ class ExoplatformBot {
      * @param moreOptions Any options to inject in the request options
      * @throws The API returned an error
      */
-    request(path, body = {}, method = 'GET', moreOptions) {
+    request(path, body = null, method = body ? 'POST' : 'GET', moreOptions) {
         return new Promise((resolve, reject) => {
             let options = {
                 auth: `${this.username}:${this.password}`,
@@ -91,6 +91,17 @@ class ExoplatformBot {
         }
     }
     /**
+     * Make an API call to eXo Platform configured API, but throws if not logged in..
+     * @param args Same as `this.request`
+     * @returns Same as `this.request`
+     * @throws {Error} `this.login` must be called before `this.loggedInRequest`
+     */
+    async loggedInRequest(...args) {
+        if (!this.username || !this.password)
+            throw new Error(msgId_1.default.NEED_LOGGED_IN);
+        return this.request(...args);
+    }
+    /**
      * Post on a user's activity stream.
      * Must be your own profile.
      * @param userId Id of the targeted profile
@@ -99,11 +110,7 @@ class ExoplatformBot {
      * @throws Unknown user or no permission to post
      */
     async postUser(userId, message) {
-        if (!this.username || !this.password)
-            throw new Error(msgId_1.default.NEED_LOGGED_IN);
-        const uri = `/private/v1/social/users/${userId}/activities`;
-        const res = await this.request(uri, { title: message }, 'POST');
-        return res.body;
+        return (await this.loggedInRequest(`/private/v1/social/users/${userId}/activities`, { title: message })).body;
     }
     /**
      * Post on a spaces's activity stream.
@@ -114,11 +121,7 @@ class ExoplatformBot {
      * @throws Unknown space or no permission to post
      */
     async postSpace(spaceId, message) {
-        if (!this.username || !this.password)
-            throw new Error(msgId_1.default.NEED_LOGGED_IN);
-        const uri = `/private/v1/social/spaces/${spaceId}/activities`;
-        const res = await this.request(uri, { title: message }, 'POST');
-        return res.body;
+        return (await this.loggedInRequest(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })).body;
     }
 }
 exports.default = ExoplatformBot;

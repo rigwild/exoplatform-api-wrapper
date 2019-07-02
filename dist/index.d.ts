@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import { IncomingMessage } from 'http';
+import { RequestOptions } from 'https';
 declare class ExoplatformBot {
     exoHostname: string;
     exoPath: string;
@@ -21,7 +22,7 @@ declare class ExoplatformBot {
      * @param moreOptions Any options to inject in the request options
      * @throws The API returned an error
      */
-    request(path: string, body?: object, method?: string, moreOptions?: object): Promise<{
+    request(path: string, body?: object | null, method?: string, moreOptions?: Partial<RequestOptions>): Promise<{
         body: object | string;
         response: IncomingMessage;
     }>;
@@ -32,6 +33,13 @@ declare class ExoplatformBot {
      * @throws Invalid credentials
      */
     login(username: string, password: string): Promise<void>;
+    /**
+     * Make an API call to eXo Platform configured API, but throws if not logged in..
+     * @param args Same as `this.request`
+     * @returns Same as `this.request`
+     * @throws {Error} `this.login` must be called before `this.loggedInRequest`
+     */
+    private loggedInRequest;
     /**
      * Post on a user's activity stream.
      * Must be your own profile.
