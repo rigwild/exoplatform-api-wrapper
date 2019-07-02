@@ -1,12 +1,18 @@
 {
   "name": "exoplatform-api-wrapper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A quick eXo Platform API wrapper",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "directories": {
     "lib": "src",
     "test": "test"
+  },
+  "homepage": "https://github.com/rigwild/exoplatform-api-wrapper#readme",
+  "bugs": { "url" : "https://github.com/rigwild/exoplatform-api-wrapper/issues" },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/rigwild/exoplatform-api-wrapper.git"
   },
   "scripts": {
     "build": "tsc",
@@ -23,5 +29,8 @@
     "@types/node": "^12.0.10",
     "dotenv": "^8.0.0",
     "typescript": "^3.5.2"
-  }
+  },
+  "contributors": [
+    "Minigugus (https://github.com/Minigugus)"
+  ]
 }
