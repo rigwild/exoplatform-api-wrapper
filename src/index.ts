@@ -35,7 +35,7 @@ class ExoplatformBot {
     path: string,
     body: object = {},
     method: string = 'GET',
-    moreOptions?: object
+    moreOptions?: Partial<RequestOptions>
   ): Promise<{ body: object | string, response: IncomingMessage }> {
     return new Promise((resolve, reject) => {
       let options: RequestOptions = {
