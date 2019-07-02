@@ -33,7 +33,7 @@ class ExoplatformBot {
    */
   request(
     path: string,
-    body: object = {},
+    body: object | null = null,
     method: string = 'GET',
     moreOptions?: Partial<RequestOptions>
   ): Promise<{ body: object | string, response: IncomingMessage }> {
