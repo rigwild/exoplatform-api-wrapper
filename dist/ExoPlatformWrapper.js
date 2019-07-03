@@ -19,6 +19,62 @@ class ExoPlatformWrapper {
         this.password = null;
         /** Path to the eXo REST API, `/rest` by default */
         this.exoPath = '/rest';
+        /** Operations related to activities */
+        this.activity = {
+            /**
+             * Get list of activities.
+             * @returns Activities list
+             */
+            read: () => this.requestAuthed(`/private/v1/social/activities`),
+            /**
+             * Read an activity.
+             * Must have read-access.
+             * @param activityId Id of the targeted activity
+             * @returns Activity content
+             * @throws {Error} Unknown activity or no permission to read
+             */
+            readId: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`),
+            /**
+             * Edit an activity.
+             * Must have write-access.
+             * @param activityId Id of the targeted activity
+             * @returns List of publications
+             * @throws {Error} Unknown activity or no permission to edit
+             */
+            editId: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+        };
+        /** Operations related to a space's stream activity */
+        this.space = {
+            /**
+             * Read a spaces's activity stream.
+             * Must have read-access.
+             * @param spaceId Id of the targeted space
+             * @returns List of publications
+             * @throws {Error} Unknown space or no permission to read
+             */
+            read: (spaceId) => this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`),
+            /**
+             * Publish on a spaces's activity stream.
+             * Must have write-access.
+             * @param spaceId Id of the targeted space
+             * @param message Message to publish
+             * @returns Newly created publication
+             * @throws {Error} Unknown space or no permission to publish
+             */
+            publish: (spaceId, message) => this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message }),
+        };
+        /** Operations related to a user's stream activity */
+        this.user = {
+            /**
+             * publish on a user's activity stream.
+             * Must be your own profile.
+             * @param userId Id of the targeted profile
+             * @param message Message to publish
+             * @returns Newly created publication
+             * @throws {Error} Unknown user or no permission to publish
+             */
+            publish: (userId, message) => this.requestAuthed(`/private/v1/social/users/${userId}/activities`, { title: message })
+        };
         this.exoHostname = exoHostname;
         this.exoPath = exoPath;
         this.exoSecureProtocol = exoSecureProtocol;
@@ -90,44 +146,25 @@ class ExoPlatformWrapper {
      * Set login credentials and check validity.
      * @param username eXo Platform username
      * @param password eXo Platform password
-     * @throws {Error} Invalid credentials
+     * @param checkCredentials Should the eXo Platform credentials be checked
+     * @throws {Error} Invalid credentials (if checkCredentials = true)
      */
-    async login(username, password) {
+    async login(username, password, checkCredentials = true) {
         if (this.username || this.password)
             throw new Error(msgId_1.default.NEED_LOGGED_OUT);
-        // Check credentials
         this.username = username;
         this.password = password;
-        try {
-            await this.request('/private/v1/social/users/');
+        // Check credentials
+        if (checkCredentials) {
+            try {
+                await this.request('/private/v1/social/users/');
+            }
+            catch (error) {
+                this.username = null;
+                this.password = null;
+                throw error;
+            }
         }
-        catch (error) {
-            this.username = null;
-            this.password = null;
-            throw error;
-        }
-    }
-    /**
-     * Post on a user's activity stream.
-     * Must be your own profile.
-     * @param userId Id of the targeted profile
-     * @param message Message to post
-     * @returns Newly created post
-     * @throws {Error} Unknown user or no permission to post
-     */
-    postUser(userId, message) {
-        return this.requestAuthed(`/private/v1/social/users/${userId}/activities`, { title: message });
-    }
-    /**
-     * Post on a spaces's activity stream.
-     * Must have write-access.
-     * @param spaceId Id of the targeted space
-     * @param message Message to post
-     * @returns Newly created post
-     * @throws {Error} Unknown space or no permission to post
-     */
-    postSpace(spaceId, message) {
-        return this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message });
     }
 }
 exports.default = ExoPlatformWrapper;

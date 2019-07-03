@@ -40,7 +40,7 @@ class ExoPlatformWrapper {
   request(
     path: string,
     body: object | null = null,
-    method: string = body ? 'POST' : 'GET',
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' = body ? 'POST' : 'GET',
     moreOptions?: Partial<RequestOptions>
   ): Promise<object> {
     return new Promise((resolve, reject) => {
@@ -53,7 +53,6 @@ class ExoPlatformWrapper {
         method,
         ...moreOptions
       }
-
       if (body) {
         if (!options.headers) options.headers = {}
         options.headers['content-type'] = 'application/json'
@@ -93,7 +92,6 @@ class ExoPlatformWrapper {
    */
   async requestAuthed(...args: Parameters<ExoPlatformWrapper['request']>): ReturnType<ExoPlatformWrapper['request']> {
     if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
-
     return this.request(...args);
   }
 
@@ -101,46 +99,92 @@ class ExoPlatformWrapper {
    * Set login credentials and check validity.
    * @param username eXo Platform username
    * @param password eXo Platform password
-   * @throws {Error} Invalid credentials
+   * @param checkCredentials Should the eXo Platform credentials be checked
+   * @throws {Error} Invalid credentials (if checkCredentials = true)
    */
-  async login(username: string, password: string): Promise<void> {
+  async login(username: string, password: string, checkCredentials: boolean = true): Promise<void> {
     if (this.username || this.password) throw new Error(msgId.NEED_LOGGED_OUT)
 
-    // Check credentials
     this.username = username
     this.password = password
-    try {
-      await this.request('/private/v1/social/users/')
-    }
-    catch (error) {
-      this.username = null
-      this.password = null
-      throw error
+
+    // Check credentials
+    if (checkCredentials) {
+      try {
+        await this.request('/private/v1/social/users/')
+      }
+      catch (error) {
+        this.username = null
+        this.password = null
+        throw error
+      }
     }
   }
 
-  /**
-   * Post on a user's activity stream.
-   * Must be your own profile.
-   * @param userId Id of the targeted profile
-   * @param message Message to post
-   * @returns Newly created post
-   * @throws {Error} Unknown user or no permission to post
-   */
-  postUser(userId: string, message: string): Promise<object> {
-    return this.requestAuthed(`/private/v1/social/users/${userId}/activities`, { title: message })
+  /** Operations related to activities */
+  activity = {
+    /**
+     * Get list of activities.
+     * @returns Activities list
+     */
+    read: (): Promise<object> => this.requestAuthed(`/private/v1/social/activities`),
+
+    /**
+     * Read an activity.
+     * Must have read-access.
+     * @param activityId Id of the targeted activity
+     * @returns Activity content
+     * @throws {Error} Unknown activity or no permission to read
+     */
+    readId: (activityId: string): Promise<object> => this.requestAuthed(`/private/v1/social/activities/${activityId}`),
+
+    /**
+     * Edit an activity.
+     * Must have write-access.
+     * @param activityId Id of the targeted activity
+     * @returns List of publications
+     * @throws {Error} Unknown activity or no permission to edit
+     */
+    editId: (activityId: string, message: string): Promise<object> =>
+      this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
   }
 
-  /**
-   * Post on a spaces's activity stream.
-   * Must have write-access.
-   * @param spaceId Id of the targeted space
-   * @param message Message to post
-   * @returns Newly created post
-   * @throws {Error} Unknown space or no permission to post
-   */
-  postSpace(spaceId: string, message: string): Promise<object> {
-    return this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })
+  /** Operations related to a space's stream activity */
+  space = {
+    /**
+     * Read a spaces's activity stream.
+     * Must have read-access.
+     * @param spaceId Id of the targeted space
+     * @returns List of publications
+     * @throws {Error} Unknown space or no permission to read
+     */
+    read: (spaceId: string): Promise<object> =>
+      this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`),
+
+    /**
+     * Publish on a spaces's activity stream.
+     * Must have write-access.
+     * @param spaceId Id of the targeted space
+     * @param message Message to publish
+     * @returns Newly created publication
+     * @throws {Error} Unknown space or no permission to publish
+     */
+    publish: (spaceId: string, message: string): Promise<object> =>
+      this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message }),
+  }
+
+  /** Operations related to a user's stream activity */
+  user = {
+    /**
+     * publish on a user's activity stream.
+     * Must be your own profile.
+     * @param userId Id of the targeted profile
+     * @param message Message to publish
+     * @returns Newly created publication
+     * @throws {Error} Unknown user or no permission to publish
+     */
+    publish: (userId: string, message: string): Promise<object> =>
+      this.requestAuthed(`/private/v1/social/users/${userId}/activities`, { title: message })
   }
 }
 
