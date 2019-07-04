@@ -1,6 +1,8 @@
 /// <reference types="node" />
 import { RequestOptions } from 'https';
-import { Activity } from './types/Activity';
+import { Activity, Comment } from './types/Activity';
+import { ApiResponseList } from './types/ApiResponse';
+import { User } from './types/User';
 declare class ExoPlatformWrapper {
     /** eXo Platform username */
     private username;
@@ -50,9 +52,9 @@ declare class ExoPlatformWrapper {
          * Get list of activities.
          * @returns Activities list
          */
-        read: () => Promise<{
+        readAll: () => Promise<ApiResponseList<{
             activities: Activity[];
-        }>;
+        }>>;
         /**
          * Read an activity.
          * Must have read-access.
@@ -60,7 +62,7 @@ declare class ExoPlatformWrapper {
          * @returns Activity content
          * @throws {Error} Unknown activity or no permission to read
          */
-        readId: (activityId: string) => Promise<Activity>;
+        read: (activityId: string) => Promise<Activity>;
         /**
          * Edit an activity.
          * Must have write-access.
@@ -68,14 +70,83 @@ declare class ExoPlatformWrapper {
          * @returns List of publications
          * @throws {Error} Unknown activity or no permission to edit
          */
-        editId: (activityId: string, message: string) => Promise<object>;
+        edit: (activityId: string, message: string) => Promise<Activity>;
         /**
          * Delete an activity.
          * Must have write-access.
          * @returns Activity content
          * @throws {Error} Unknown activity or no permission to delete
          */
-        deleteId: (activityId: string) => Promise<object>;
+        delete: (activityId: string) => Promise<Activity>;
+        /** Operations related to an activity's likes */
+        like: {
+            /**
+             * Get activity likers.
+             * Must have read-access.
+             * @param activityId Id of the targeted activity
+             * @returns Activity likers
+             * @throws {Error} Unknown activity or no permission to read
+             */
+            list: (activityId: string) => Promise<ApiResponseList<{
+                likes: User[];
+            }>>;
+            /**
+             * Like an activity.
+             * Must have read-access.
+             * @param activityId Id of the targeted activity
+             * @returns Activity content
+             * @throws {Error} Unknown activity or no permission to read
+             */
+            add: (activityId: string) => Promise<Activity>;
+            /**
+             * Remove a like from an activity.
+             * Must have permission to delete the targetted like.
+             * @param activityId Id of the targeted activity
+             * @param username Id of the user to remove the like from (if you are admin). Defaults to current logged in user
+             * @returns Activity content
+             * @throws {Error} Unknown activity or no permission to read or no permission to remove the like
+             */
+            remove: (activityId: string, username?: string | undefined) => Promise<Activity>;
+        };
+        /** Operations related to an activity's comments */
+        comment: {
+            /**
+             * Get activity comments.
+             * Must have read-access.
+             * @param activityId Id of the targeted activity
+             * @returns Activity comments
+             * @throws {Error} Unknown activity or no permission to read
+             */
+            list: (activityId: string) => Promise<ApiResponseList<{
+                comments: Comment[];
+            }>>;
+            /**
+             * Comment an activity.
+             * Must have read-access.
+             * @param activityId Id of the targeted activity
+             * @param message Comment to add
+             * @returns Comment content
+             * @throws {Error} Unknown activity or no permission to read
+             */
+            add: (activityId: string, message: string) => Promise<Comment>;
+            /**
+             * Edit a comment.
+             * Must have write-access.
+             * @param commentId Id of the targeted comment
+             * @param message New comment
+             * @returns Comment content
+             * @throws {Error} Unknown comment or no permission to edit
+             */
+            edit: (commentId: string, message: string) => Promise<Comment>;
+            /**
+             * Delete a comment.
+             * Must have write-access.
+             * @param commentId Id of the targeted comment
+             * @returns Comment content
+             * @throws {Error} Unknown comment or no permission to delete the comment
+             */
+            remove: (commentId: string) => Promise<Comment>;
+        };
     };
     /** Operations related to a space's stream activity */
     space: {
@@ -86,9 +157,9 @@ declare class ExoPlatformWrapper {
          * @returns List of publications
          * @throws {Error} Unknown space or no permission to read
          */
-        read: (spaceId: string) => Promise<{
+        read: (spaceId: string) => Promise<ApiResponseList<{
             activities: Activity[];
-        }>;
+        }>>;
         /**
          * Publish on a spaces's activity stream.
          * Must have write-access.
@@ -97,19 +168,27 @@ declare class ExoPlatformWrapper {
          * @returns Newly created publication
          * @throws {Error} Unknown space or no permission to publish
          */
-        publish: (spaceId: string, message: string) => Promise<object>;
+        publish: (spaceId: string, message: string) => Promise<Activity>;
     };
     /** Operations related to a user's stream activity */
     user: {
         /**
+         * Read a user's activity stream.
+         * @param username Id of the targeted user. Defaults to current logged in user
+         * @returns Activities list
+         * @throws {Error} Unknown user or no permission to read
+         */
+        read: (username?: string | undefined) => Promise<ApiResponseList<{
+            activities: Activity[];
+        }>>;
+        /**
          * publish on a user's activity stream.
-         * Must be your own profile.
-         * @param userId Id of the targeted profile
+         * Can only be your own profile.
          * @param message Message to publish
          * @returns Newly created publication
          * @throws {Error} Unknown user or no permission to publish
          */
-        publish: (userId: string, message: string) => Promise<object>;
+        publish: (message: string) => Promise<Activity>;
     };
 }
 export default ExoPlatformWrapper;

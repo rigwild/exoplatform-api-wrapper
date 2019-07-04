@@ -25,7 +25,7 @@ class ExoPlatformWrapper {
              * Get list of activities.
              * @returns Activities list
              */
-            read: () => this.requestAuthed(`/private/v1/social/activities`),
+            readAll: () => this.requestAuthed(`/private/v1/social/activities`),
             /**
              * Read an activity.
              * Must have read-access.
@@ -33,7 +33,7 @@ class ExoPlatformWrapper {
              * @returns Activity content
              * @throws {Error} Unknown activity or no permission to read
              */
-            readId: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`),
+            read: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`),
             /**
              * Edit an activity.
              * Must have write-access.
@@ -41,14 +41,79 @@ class ExoPlatformWrapper {
              * @returns List of publications
              * @throws {Error} Unknown activity or no permission to edit
              */
-            editId: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+            edit: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
             /**
              * Delete an activity.
              * Must have write-access.
              * @returns Activity content
              * @throws {Error} Unknown activity or no permission to delete
              */
-            deleteId: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, null, 'DELETE'),
+            delete: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, null, 'DELETE'),
+            /** Operations related to an activity's likes */
+            like: {
+                /**
+                 * Get activity likers.
+                 * Must have read-access.
+                 * @param activityId Id of the targeted activity
+                 * @returns Activity likers
+                 * @throws {Error} Unknown activity or no permission to read
+                 */
+                list: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}/likes`),
+                /**
+                 * Like an activity.
+                 * Must have read-access.
+                 * @param activityId Id of the targeted activity
+                 * @returns Activity content
+                 * @throws {Error} Unknown activity or no permission to read
+                 */
+                add: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}/likes`, null, 'POST'),
+                /**
+                 * Remove a like from an activity.
+                 * Must have permission to delete the targetted like.
+                 * @param activityId Id of the targeted activity
+                 * @param username Id of the user to remove the like from (if you are admin). Defaults to current logged in user
+                 * @returns Activity content
+                 * @throws {Error} Unknown activity or no permission to read or no permission to remove the like
+                 */
+                remove: (activityId, username = this.username || undefined) => this.requestAuthed(`/private/v1/social/activities/${activityId}/likes/${username}`, null, 'DELETE')
+            },
+            /** Operations related to an activity's comments */
+            comment: {
+                /**
+                 * Get activity comments.
+                 * Must have read-access.
+                 * @param activityId Id of the targeted activity
+                 * @returns Activity comments
+                 * @throws {Error} Unknown activity or no permission to read
+                 */
+                list: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}/comments`),
+                /**
+                 * Comment an activity.
+                 * Must have read-access.
+                 * @param activityId Id of the targeted activity
+                 * @param message Comment to add
+                 * @returns Comment content
+                 * @throws {Error} Unknown activity or no permission to read
+                 */
+                add: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}/comments`, { title: message }, 'POST'),
+                /**
+                 * Edit a comment.
+                 * Must have write-access.
+                 * @param commentId Id of the targeted comment
+                 * @param message New comment
+                 * @returns Comment content
+                 * @throws {Error} Unknown comment or no permission to edit
+                 */
+                edit: (commentId, message) => this.requestAuthed(`/private/v1/social/comments/comment${commentId}`, { title: message }, 'PUT'),
+                /**
+                 * Delete a comment.
+                 * Must have write-access.
+                 * @param commentId Id of the targeted comment
+                 * @returns Comment content
+                 * @throws {Error} Unknown comment or no permission to delete the comment
+                 */
+                remove: (commentId) => this.requestAuthed(`/private/v1/social/comments/comment${commentId}`, null, 'DELETE'),
+            }
         };
         /** Operations related to a space's stream activity */
         this.space = {
@@ -68,19 +133,25 @@ class ExoPlatformWrapper {
              * @returns Newly created publication
              * @throws {Error} Unknown space or no permission to publish
              */
-            publish: (spaceId, message) => this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message }),
+            publish: (spaceId, message) => this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })
         };
         /** Operations related to a user's stream activity */
         this.user = {
             /**
+             * Read a user's activity stream.
+             * @param username Id of the targeted user. Defaults to current logged in user
+             * @returns Activities list
+             * @throws {Error} Unknown user or no permission to read
+             */
+            read: (username = this.username || undefined) => this.requestAuthed(`/private/v1/social/users/${username}/activities`),
+            /**
              * publish on a user's activity stream.
-             * Must be your own profile.
-             * @param userId Id of the targeted profile
+             * Can only be your own profile.
              * @param message Message to publish
              * @returns Newly created publication
              * @throws {Error} Unknown user or no permission to publish
              */
-            publish: (userId, message) => this.requestAuthed(`/private/v1/social/users/${userId}/activities`, { title: message })
+            publish: (message) => this.requestAuthed(`/private/v1/social/users/${this.username}/activities`, { title: message })
         };
         this.exoHostname = exoHostname;
         this.exoPath = exoPath;
@@ -116,19 +187,14 @@ class ExoPlatformWrapper {
                 res.on('data', d => text += d);
                 res.on('end', () => {
                     // There was an error
-                    if (res.statusCode && res.statusCode > 400) {
-                        // Try to extract the error
-                        const parsedError = /Description\<\/b\>\s(.*?)\<\/p\>/g.exec(text);
-                        if (parsedError && parsedError.length >= 2)
-                            reject(new Error(`${res.statusCode} - ${parsedError[1]}`));
+                    if (res.statusCode && res.statusCode > 400)
                         reject(new Error(`${res.statusCode} - ${text}`));
-                    }
                     // Try to parse JSON output
                     try {
                         resolve(JSON.parse(text));
                     }
                     catch {
-                        reject(new Error(`Could not parse the API's response. Body content: ${text}`));
+                        reject(new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`));
                     }
                 });
             });

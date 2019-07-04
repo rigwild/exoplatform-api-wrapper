@@ -88,4 +88,34 @@ export declare interface Activity {
         id: string;
     };
 }
+export declare interface Comment {
+    /** Comment's id */
+    id: string;
+    /** Comment's content */
+    title: string;
+    body: any;
+    /** API link to load the comment's data */
+    href: string;
+    /** API link to load the comment's author identity */
+    identity: string;
+    /** Author's id */
+    poster: string;
+    /** Mentionned users' data */
+    mentions: [{
+        /** User's id */
+        id: string;
+        /** API link to load the mentionned user's data */
+        href: string;
+    }];
+    /** API link to load the comment's likes */
+    likes: string;
+    /** Comment's creation date */
+    createDate: string;
+    /** Comment's last update date */
+    updateDate: string;
+    /** Parent comment id if nested comment */
+    parentCommentId: string | null;
+    /** API link to load the activity on which the comment was posted  */
+    activity: string;
+}
 //# sourceMappingURL=Activity.d.ts.map
