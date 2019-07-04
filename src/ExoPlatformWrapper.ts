@@ -1,5 +1,6 @@
 import https, { RequestOptions } from 'https'
 
+import { Activity } from './types/Activity'
 import msgId from './msgId'
 
 class ExoPlatformWrapper {
@@ -37,12 +38,12 @@ class ExoPlatformWrapper {
    * @returns The API's response
    * @throws {Error} The API returned an error or the response was not JSON-valid
    */
-  request(
+  request<T extends {}>(
     path: string,
     body: object | null = null,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = body ? 'POST' : 'GET',
     moreOptions?: Partial<RequestOptions>
-  ): Promise<object> {
+  ): Promise<T> {
     return new Promise((resolve, reject) => {
       let options: RequestOptions = {
         auth: `${this.username}:${this.password}`,
@@ -90,9 +91,9 @@ class ExoPlatformWrapper {
    * @returns Same as `this.request`
    * @throws {Error} You must be authenticated using `this.login`
    */
-  async requestAuthed(...args: Parameters<ExoPlatformWrapper['request']>): ReturnType<ExoPlatformWrapper['request']> {
+  async requestAuthed<T extends {}>(...args: Parameters<ExoPlatformWrapper['request']>) {
     if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
-    return this.request(...args);
+    return this.request<T>(...args)
   }
 
   /**
@@ -127,7 +128,7 @@ class ExoPlatformWrapper {
      * Get list of activities.
      * @returns Activities list
      */
-    read: (): Promise<object> => this.requestAuthed(`/private/v1/social/activities`),
+    read: () => this.requestAuthed<{ activities: Activity[] }>(`/private/v1/social/activities`),
 
     /**
      * Read an activity.
@@ -136,7 +137,8 @@ class ExoPlatformWrapper {
      * @returns Activity content
      * @throws {Error} Unknown activity or no permission to read
      */
-    readId: (activityId: string): Promise<object> => this.requestAuthed(`/private/v1/social/activities/${activityId}`),
+    readId: (activityId: string) =>
+      this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}`),
 
     /**
      * Edit an activity.
@@ -146,7 +148,16 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown activity or no permission to edit
      */
     editId: (activityId: string, message: string): Promise<object> =>
-      this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+      this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+
+    /**
+     * Delete an activity.
+     * Must have write-access.
+     * @returns Activity content
+     * @throws {Error} Unknown activity or no permission to delete
+     */
+    deleteId: (activityId: string): Promise<object> =>
+      this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}`, null, 'DELETE'),
   }
 
   /** Operations related to a space's stream activity */
@@ -158,8 +169,8 @@ class ExoPlatformWrapper {
      * @returns List of publications
      * @throws {Error} Unknown space or no permission to read
      */
-    read: (spaceId: string): Promise<object> =>
-      this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`),
+    read: (spaceId: string): Promise<{ activities: Activity[] }> =>
+      this.requestAuthed<{ activities: Activity[] }>(`/private/v1/social/spaces/${spaceId}/activities`),
 
     /**
      * Publish on a spaces's activity stream.
@@ -170,7 +181,7 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown space or no permission to publish
      */
     publish: (spaceId: string, message: string): Promise<object> =>
-      this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message }),
+      this.requestAuthed<Activity>(`/private/v1/social/spaces/${spaceId}/activities`, { title: message }),
   }
 
   /** Operations related to a user's stream activity */
@@ -184,7 +195,7 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown user or no permission to publish
      */
     publish: (userId: string, message: string): Promise<object> =>
-      this.requestAuthed(`/private/v1/social/users/${userId}/activities`, { title: message })
+      this.requestAuthed<Activity>(`/private/v1/social/users/${userId}/activities`, { title: message })
   }
 }
 

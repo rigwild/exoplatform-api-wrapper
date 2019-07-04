@@ -14,6 +14,7 @@ const setup = async () => {
   const posted = await bot.user.publish(process.env.EXO_USERNAME, 'Testing')
   console.log(await bot.activity.editId(posted.id, 'Testing...'))
   console.log('If it worked, the message `Testing...` was posted on your profile.')
+  // console.log((await bot.activity.read()).activities[0])
 }
 
 setup()

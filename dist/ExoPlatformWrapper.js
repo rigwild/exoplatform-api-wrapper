@@ -42,6 +42,13 @@ class ExoPlatformWrapper {
              * @throws {Error} Unknown activity or no permission to edit
              */
             editId: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+            /**
+             * Delete an activity.
+             * Must have write-access.
+             * @returns Activity content
+             * @throws {Error} Unknown activity or no permission to delete
+             */
+            deleteId: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, null, 'DELETE'),
         };
         /** Operations related to a space's stream activity */
         this.space = {

@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import { RequestOptions } from 'https';
+import { Activity } from './types/Activity';
 declare class ExoPlatformWrapper {
     /** eXo Platform username */
     private username;
@@ -27,14 +28,14 @@ declare class ExoPlatformWrapper {
      * @returns The API's response
      * @throws {Error} The API returned an error or the response was not JSON-valid
      */
-    request(path: string, body?: object | null, method?: 'GET' | 'POST' | 'PUT' | 'DELETE', moreOptions?: Partial<RequestOptions>): Promise<object>;
+    request<T extends {}>(path: string, body?: object | null, method?: 'GET' | 'POST' | 'PUT' | 'DELETE', moreOptions?: Partial<RequestOptions>): Promise<T>;
     /**
      * Make an authenticated API call to the eXo Platform configured API.
      * @param args Same as `this.request`
      * @returns Same as `this.request`
      * @throws {Error} You must be authenticated using `this.login`
      */
-    requestAuthed(...args: Parameters<ExoPlatformWrapper['request']>): ReturnType<ExoPlatformWrapper['request']>;
+    requestAuthed<T extends {}>(...args: Parameters<ExoPlatformWrapper['request']>): Promise<T>;
     /**
      * Set login credentials and check validity.
      * @param username eXo Platform username
@@ -49,7 +50,9 @@ declare class ExoPlatformWrapper {
          * Get list of activities.
          * @returns Activities list
          */
-        read: () => Promise<object>;
+        read: () => Promise<{
+            activities: Activity[];
+        }>;
         /**
          * Read an activity.
          * Must have read-access.
@@ -57,7 +60,7 @@ declare class ExoPlatformWrapper {
          * @returns Activity content
          * @throws {Error} Unknown activity or no permission to read
          */
-        readId: (activityId: string) => Promise<object>;
+        readId: (activityId: string) => Promise<Activity>;
         /**
          * Edit an activity.
          * Must have write-access.
@@ -66,6 +69,13 @@ declare class ExoPlatformWrapper {
          * @throws {Error} Unknown activity or no permission to edit
          */
         editId: (activityId: string, message: string) => Promise<object>;
+        /**
+         * Delete an activity.
+         * Must have write-access.
+         * @returns Activity content
+         * @throws {Error} Unknown activity or no permission to delete
+         */
+        deleteId: (activityId: string) => Promise<object>;
     };
     /** Operations related to a space's stream activity */
     space: {
@@ -76,7 +86,9 @@ declare class ExoPlatformWrapper {
          * @returns List of publications
          * @throws {Error} Unknown space or no permission to read
          */
-        read: (spaceId: string) => Promise<object>;
+        read: (spaceId: string) => Promise<{
+            activities: Activity[];
+        }>;
         /**
          * Publish on a spaces's activity stream.
          * Must have write-access.
