@@ -1,8 +1,7 @@
 /// <reference types="node" />
 import { RequestOptions } from 'https';
 import { Activity, Comment } from './types/Activity';
-import { ApiResponseList } from './types/ApiResponse';
-import { User } from './types/User';
+import { Space, SpacePartial } from './types/Space';
 declare class ExoPlatformWrapper {
     /** eXo Platform username */
     private username;
@@ -52,11 +51,11 @@ declare class ExoPlatformWrapper {
          * Get list of activities.
          * @returns Activities list
          */
-        readAll: () => Promise<ApiResponseList<{
+        readStream: () => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**
-         * Read an activity.
+         * Get an activity.
          * Must have read-access.
          * @param activityId Id of the targeted activity
          * @returns Activity content
@@ -87,8 +86,8 @@ declare class ExoPlatformWrapper {
              * @returns Activity likers
              * @throws {Error} Unknown activity or no permission to read
              */
-            list: (activityId: string) => Promise<ApiResponseList<{
-                likes: User[];
+            list: (activityId: string) => Promise<import("./types/ApiResponse").ApiResponseList<{
+                likes: import("./types/User").User[];
             }>>;
             /**
              * Like an activity.
@@ -117,7 +116,7 @@ declare class ExoPlatformWrapper {
              * @returns Activity comments
              * @throws {Error} Unknown activity or no permission to read
              */
-            list: (activityId: string) => Promise<ApiResponseList<{
+            list: (activityId: string) => Promise<import("./types/ApiResponse").ApiResponseList<{
                 comments: Comment[];
             }>>;
             /**
@@ -151,13 +150,46 @@ declare class ExoPlatformWrapper {
     /** Operations related to a space's stream activity */
     space: {
         /**
+         * Create a space.
+         * Must have write-access.
+         * @param spaceData Data of the space to create
+         * @returns Newly created space
+         * @throws {Error} No permission to create a space or `displayName` already taken
+         */
+        create: (spaceData: SpacePartial) => Promise<Space>;
+        /**
+         * Edit a space data.
+         * Must have write-access.
+         * @param spaceId The targetted space id
+         * @param spaceData New data of the spam
+         * @returns New space data
+         * @throws {Error} No permission to edit the space or new `displayName` already taken
+         */
+        edit: (spaceId: string, spaceData: SpacePartial) => Promise<Space>;
+        /**
+         * Delete a space.
+         * Must have write-access.
+         * @param spaceId The targetted space id
+         * @returns Old space data
+         * @throws {Error} No permission to delete the space
+         */
+        remove: (spaceId: string) => Promise<Space>;
+        /**
+         * Get a space's data.
+         * Must have read-access.
+         * @param spaceId Id of the targeted space
+         * @returns Space's data
+         * @throws {Error} Unknown space or no permission to read
+         */
+        getData: (spaceId: string) => Promise<Space>;
+        /**
          * Read a spaces's activity stream.
          * Must have read-access.
          * @param spaceId Id of the targeted space
          * @returns List of publications
          * @throws {Error} Unknown space or no permission to read
          */
-        read: (spaceId: string) => Promise<ApiResponseList<{
+        readStream: (spaceId: string) => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**
@@ -178,7 +210,7 @@ declare class ExoPlatformWrapper {
          * @returns Activities list
          * @throws {Error} Unknown user or no permission to read
          */
-        read: (username?: string | undefined) => Promise<ApiResponseList<{
+        readStream: (username?: string | undefined) => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**

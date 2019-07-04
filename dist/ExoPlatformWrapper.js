@@ -25,15 +25,15 @@ class ExoPlatformWrapper {
              * Get list of activities.
              * @returns Activities list
              */
-            readAll: () => this.requestAuthed(`/private/v1/social/activities`),
+            readStream: () => this.requestAuthed(`/social/activities`),
             /**
-             * Read an activity.
+             * Get an activity.
              * Must have read-access.
              * @param activityId Id of the targeted activity
              * @returns Activity content
              * @throws {Error} Unknown activity or no permission to read
              */
-            read: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`),
+            read: (activityId) => this.requestAuthed(`/social/activities/${activityId}`),
             /**
              * Edit an activity.
              * Must have write-access.
@@ -41,14 +41,14 @@ class ExoPlatformWrapper {
              * @returns List of publications
              * @throws {Error} Unknown activity or no permission to edit
              */
-            edit: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+            edit: (activityId, message) => this.requestAuthed(`/social/activities/${activityId}`, { title: message }, 'PUT'),
             /**
              * Delete an activity.
              * Must have write-access.
              * @returns Activity content
              * @throws {Error} Unknown activity or no permission to delete
              */
-            delete: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}`, null, 'DELETE'),
+            delete: (activityId) => this.requestAuthed(`/social/activities/${activityId}`, null, 'DELETE'),
             /** Operations related to an activity's likes */
             like: {
                 /**
@@ -58,7 +58,7 @@ class ExoPlatformWrapper {
                  * @returns Activity likers
                  * @throws {Error} Unknown activity or no permission to read
                  */
-                list: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}/likes`),
+                list: (activityId) => this.requestAuthed(`/social/activities/${activityId}/likes`),
                 /**
                  * Like an activity.
                  * Must have read-access.
@@ -66,7 +66,7 @@ class ExoPlatformWrapper {
                  * @returns Activity content
                  * @throws {Error} Unknown activity or no permission to read
                  */
-                add: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}/likes`, null, 'POST'),
+                add: (activityId) => this.requestAuthed(`/social/activities/${activityId}/likes`, null, 'POST'),
                 /**
                  * Remove a like from an activity.
                  * Must have permission to delete the targetted like.
@@ -75,7 +75,7 @@ class ExoPlatformWrapper {
                  * @returns Activity content
                  * @throws {Error} Unknown activity or no permission to read or no permission to remove the like
                  */
-                remove: (activityId, username = this.username || undefined) => this.requestAuthed(`/private/v1/social/activities/${activityId}/likes/${username}`, null, 'DELETE')
+                remove: (activityId, username = this.username || undefined) => this.requestAuthed(`/social/activities/${activityId}/likes/${username}`, null, 'DELETE')
             },
             /** Operations related to an activity's comments */
             comment: {
@@ -86,7 +86,7 @@ class ExoPlatformWrapper {
                  * @returns Activity comments
                  * @throws {Error} Unknown activity or no permission to read
                  */
-                list: (activityId) => this.requestAuthed(`/private/v1/social/activities/${activityId}/comments`),
+                list: (activityId) => this.requestAuthed(`/social/activities/${activityId}/comments`),
                 /**
                  * Comment an activity.
                  * Must have read-access.
@@ -95,7 +95,7 @@ class ExoPlatformWrapper {
                  * @returns Comment content
                  * @throws {Error} Unknown activity or no permission to read
                  */
-                add: (activityId, message) => this.requestAuthed(`/private/v1/social/activities/${activityId}/comments`, { title: message }, 'POST'),
+                add: (activityId, message) => this.requestAuthed(`/social/activities/${activityId}/comments`, { title: message }, 'POST'),
                 /**
                  * Edit a comment.
                  * Must have write-access.
@@ -104,7 +104,7 @@ class ExoPlatformWrapper {
                  * @returns Comment content
                  * @throws {Error} Unknown comment or no permission to edit
                  */
-                edit: (commentId, message) => this.requestAuthed(`/private/v1/social/comments/comment${commentId}`, { title: message }, 'PUT'),
+                edit: (commentId, message) => this.requestAuthed(`/social/comments/comment${commentId}`, { title: message }, 'PUT'),
                 /**
                  * Delete a comment.
                  * Must have write-access.
@@ -112,11 +112,44 @@ class ExoPlatformWrapper {
                  * @returns Comment content
                  * @throws {Error} Unknown comment or no permission to delete the comment
                  */
-                remove: (commentId) => this.requestAuthed(`/private/v1/social/comments/comment${commentId}`, null, 'DELETE'),
+                remove: (commentId) => this.requestAuthed(`/social/comments/comment${commentId}`, null, 'DELETE'),
             }
         };
         /** Operations related to a space's stream activity */
         this.space = {
+            /**
+             * Create a space.
+             * Must have write-access.
+             * @param spaceData Data of the space to create
+             * @returns Newly created space
+             * @throws {Error} No permission to create a space or `displayName` already taken
+             */
+            create: (spaceData) => this.requestAuthed(`/social/spaces`, spaceData),
+            /**
+             * Edit a space data.
+             * Must have write-access.
+             * @param spaceId The targetted space id
+             * @param spaceData New data of the spam
+             * @returns New space data
+             * @throws {Error} No permission to edit the space or new `displayName` already taken
+             */
+            edit: (spaceId, spaceData) => this.requestAuthed(`/social/spaces/${spaceId}`, spaceData, 'PUT'),
+            /**
+             * Delete a space.
+             * Must have write-access.
+             * @param spaceId The targetted space id
+             * @returns Old space data
+             * @throws {Error} No permission to delete the space
+             */
+            remove: (spaceId) => this.requestAuthed(`/social/spaces/${spaceId}`, null, 'DELETE'),
+            /**
+             * Get a space's data.
+             * Must have read-access.
+             * @param spaceId Id of the targeted space
+             * @returns Space's data
+             * @throws {Error} Unknown space or no permission to read
+             */
+            getData: (spaceId) => this.requestAuthed(`/social/spaces/${spaceId}`),
             /**
              * Read a spaces's activity stream.
              * Must have read-access.
@@ -124,7 +157,7 @@ class ExoPlatformWrapper {
              * @returns List of publications
              * @throws {Error} Unknown space or no permission to read
              */
-            read: (spaceId) => this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`),
+            readStream: (spaceId) => this.requestAuthed(`/social/spaces/${spaceId}/activities`),
             /**
              * Publish on a spaces's activity stream.
              * Must have write-access.
@@ -133,7 +166,7 @@ class ExoPlatformWrapper {
              * @returns Newly created publication
              * @throws {Error} Unknown space or no permission to publish
              */
-            publish: (spaceId, message) => this.requestAuthed(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })
+            publish: (spaceId, message) => this.requestAuthed(`/social/spaces/${spaceId}/activities`, { title: message })
         };
         /** Operations related to a user's stream activity */
         this.user = {
@@ -143,7 +176,7 @@ class ExoPlatformWrapper {
              * @returns Activities list
              * @throws {Error} Unknown user or no permission to read
              */
-            read: (username = this.username || undefined) => this.requestAuthed(`/private/v1/social/users/${username}/activities`),
+            readStream: (username = this.username || undefined) => this.requestAuthed(`/social/users/${username}/activities`),
             /**
              * publish on a user's activity stream.
              * Can only be your own profile.
@@ -151,7 +184,7 @@ class ExoPlatformWrapper {
              * @returns Newly created publication
              * @throws {Error} Unknown user or no permission to publish
              */
-            publish: (message) => this.requestAuthed(`/private/v1/social/users/${this.username}/activities`, { title: message })
+            publish: (message) => this.requestAuthed(`/social/users/${this.username}/activities`, { title: message })
         };
         this.exoHostname = exoHostname;
         this.exoPath = exoPath;
@@ -213,6 +246,7 @@ class ExoPlatformWrapper {
     async requestAuthed(...args) {
         if (!this.username || !this.password)
             throw new Error(msgId_1.default.NEED_LOGGED_IN);
+        args[0] = `/private/v1${args[0]}`;
         return this.request(...args);
     }
     /**
@@ -230,7 +264,7 @@ class ExoPlatformWrapper {
         // Check credentials
         if (checkCredentials) {
             try {
-                await this.request('/private/v1/social/users/');
+                await this.requestAuthed('/social/users/');
             }
             catch (error) {
                 this.username = null;

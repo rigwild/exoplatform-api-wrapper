@@ -1,8 +1,8 @@
 import https, { RequestOptions } from 'https'
 import { Activity, Comment } from './types/Activity'
-import { ApiResponseList } from './types/ApiResponse'
-import { User } from './types/User'
+import { ApiActivitiesList, ApiCommentsList, ApiLikesList } from './types/ApiResponse'
 import msgId from './msgId'
+import { Space, SpacePartial } from './types/Space'
 
 class ExoPlatformWrapper {
   /** eXo Platform username */
@@ -89,6 +89,7 @@ class ExoPlatformWrapper {
    */
   async requestAuthed<T extends {}>(...args: Parameters<ExoPlatformWrapper['request']>) {
     if (!this.username || !this.password) throw new Error(msgId.NEED_LOGGED_IN)
+    args[0] = `/private/v1${args[0]}`
     return this.request<T>(...args)
   }
 
@@ -108,7 +109,7 @@ class ExoPlatformWrapper {
     // Check credentials
     if (checkCredentials) {
       try {
-        await this.request('/private/v1/social/users/')
+        await this.requestAuthed('/social/users/')
       }
       catch (error) {
         this.username = null
@@ -124,18 +125,18 @@ class ExoPlatformWrapper {
      * Get list of activities.
      * @returns Activities list
      */
-    readAll: () =>
-      this.requestAuthed<ApiResponseList<{ activities: Activity[] }>>(`/private/v1/social/activities`),
+    readStream: () =>
+      this.requestAuthed<ApiActivitiesList>(`/social/activities`),
 
     /**
-     * Read an activity.
+     * Get an activity.
      * Must have read-access.
      * @param activityId Id of the targeted activity
      * @returns Activity content
      * @throws {Error} Unknown activity or no permission to read
      */
     read: (activityId: string) =>
-      this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}`),
+      this.requestAuthed<Activity>(`/social/activities/${activityId}`),
 
     /**
      * Edit an activity.
@@ -145,7 +146,7 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown activity or no permission to edit
      */
     edit: (activityId: string, message: string) =>
-      this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}`, { title: message }, 'PUT'),
+      this.requestAuthed<Activity>(`/social/activities/${activityId}`, { title: message }, 'PUT'),
 
     /**
      * Delete an activity.
@@ -154,7 +155,7 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown activity or no permission to delete
      */
     delete: (activityId: string) =>
-      this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}`, null, 'DELETE'),
+      this.requestAuthed<Activity>(`/social/activities/${activityId}`, null, 'DELETE'),
 
 
     /** Operations related to an activity's likes */
@@ -167,7 +168,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown activity or no permission to read
        */
       list: (activityId: string) =>
-        this.requestAuthed<ApiResponseList<{ likes: User[] }>>(`/private/v1/social/activities/${activityId}/likes`),
+        this.requestAuthed<ApiLikesList>(`/social/activities/${activityId}/likes`),
 
       /**
        * Like an activity.
@@ -177,7 +178,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown activity or no permission to read
        */
       add: (activityId: string) =>
-        this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}/likes`, null, 'POST'),
+        this.requestAuthed<Activity>(`/social/activities/${activityId}/likes`, null, 'POST'),
 
       /**
        * Remove a like from an activity.
@@ -188,7 +189,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown activity or no permission to read or no permission to remove the like
        */
       remove: (activityId: string, username: string | undefined = this.username || undefined) =>
-        this.requestAuthed<Activity>(`/private/v1/social/activities/${activityId}/likes/${username}`, null, 'DELETE')
+        this.requestAuthed<Activity>(`/social/activities/${activityId}/likes/${username}`, null, 'DELETE')
     },
 
     /** Operations related to an activity's comments */
@@ -201,7 +202,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown activity or no permission to read
        */
       list: (activityId: string) =>
-        this.requestAuthed<ApiResponseList<{ comments: Comment[] }>>(`/private/v1/social/activities/${activityId}/comments`),
+        this.requestAuthed<ApiCommentsList>(`/social/activities/${activityId}/comments`),
 
       /**
        * Comment an activity.
@@ -212,7 +213,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown activity or no permission to read
        */
       add: (activityId: string, message: string) =>
-        this.requestAuthed<Comment>(`/private/v1/social/activities/${activityId}/comments`, { title: message }, 'POST'),
+        this.requestAuthed<Comment>(`/social/activities/${activityId}/comments`, { title: message }, 'POST'),
 
       /**
        * Edit a comment.
@@ -223,7 +224,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown comment or no permission to edit
        */
       edit: (commentId: string, message: string) =>
-        this.requestAuthed<Comment>(`/private/v1/social/comments/comment${commentId}`, { title: message }, 'PUT'),
+        this.requestAuthed<Comment>(`/social/comments/comment${commentId}`, { title: message }, 'PUT'),
 
       /**
        * Delete a comment.
@@ -233,12 +234,53 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown comment or no permission to delete the comment
        */
       remove: (commentId: string) =>
-        this.requestAuthed<Comment>(`/private/v1/social/comments/comment${commentId}`, null, 'DELETE'),
+        this.requestAuthed<Comment>(`/social/comments/comment${commentId}`, null, 'DELETE'),
     }
   }
 
   /** Operations related to a space's stream activity */
   space = {
+    /**
+     * Create a space.
+     * Must have write-access.
+     * @param spaceData Data of the space to create
+     * @returns Newly created space
+     * @throws {Error} No permission to create a space or `displayName` already taken
+     */
+    create: (spaceData: SpacePartial) =>
+      this.requestAuthed<Space>(`/social/spaces`, spaceData),
+
+    /**
+     * Edit a space data.
+     * Must have write-access.
+     * @param spaceId The targetted space id
+     * @param spaceData New data of the spam
+     * @returns New space data
+     * @throws {Error} No permission to edit the space or new `displayName` already taken
+     */
+    edit: (spaceId: string, spaceData: SpacePartial) =>
+      this.requestAuthed<Space>(`/social/spaces/${spaceId}`, spaceData, 'PUT'),
+
+    /**
+     * Delete a space.
+     * Must have write-access.
+     * @param spaceId The targetted space id
+     * @returns Old space data
+     * @throws {Error} No permission to delete the space
+     */
+    remove: (spaceId: string) =>
+      this.requestAuthed<Space>(`/social/spaces/${spaceId}`, null, 'DELETE'),
+
+    /**
+     * Get a space's data.
+     * Must have read-access.
+     * @param spaceId Id of the targeted space
+     * @returns Space's data
+     * @throws {Error} Unknown space or no permission to read
+     */
+    getData: (spaceId: string) =>
+      this.requestAuthed<Space>(`/social/spaces/${spaceId}`),
+
     /**
      * Read a spaces's activity stream.
      * Must have read-access.
@@ -246,8 +288,8 @@ class ExoPlatformWrapper {
      * @returns List of publications
      * @throws {Error} Unknown space or no permission to read
      */
-    read: (spaceId: string) =>
-      this.requestAuthed<ApiResponseList<{ activities: Activity[] }>>(`/private/v1/social/spaces/${spaceId}/activities`),
+    readStream: (spaceId: string) =>
+      this.requestAuthed<ApiActivitiesList>(`/social/spaces/${spaceId}/activities`),
 
     /**
      * Publish on a spaces's activity stream.
@@ -258,7 +300,7 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown space or no permission to publish
      */
     publish: (spaceId: string, message: string) =>
-      this.requestAuthed<Activity>(`/private/v1/social/spaces/${spaceId}/activities`, { title: message })
+      this.requestAuthed<Activity>(`/social/spaces/${spaceId}/activities`, { title: message })
   }
 
   /** Operations related to a user's stream activity */
@@ -269,8 +311,8 @@ class ExoPlatformWrapper {
      * @returns Activities list
      * @throws {Error} Unknown user or no permission to read
      */
-    read: (username: string | undefined = this.username || undefined) =>
-      this.requestAuthed<ApiResponseList<{ activities: Activity[] }>>(`/private/v1/social/users/${username}/activities`),
+    readStream: (username: string | undefined = this.username || undefined) =>
+      this.requestAuthed<ApiActivitiesList>(`/social/users/${username}/activities`),
 
     /**
      * publish on a user's activity stream.
@@ -280,7 +322,7 @@ class ExoPlatformWrapper {
      * @throws {Error} Unknown user or no permission to publish
      */
     publish: (message: string) =>
-      this.requestAuthed<Activity>(`/private/v1/social/users/${this.username}/activities`, { title: message })
+      this.requestAuthed<Activity>(`/social/users/${this.username}/activities`, { title: message })
   }
 }
 

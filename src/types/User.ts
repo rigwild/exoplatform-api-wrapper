@@ -1,4 +1,4 @@
-declare interface UserExperience {
+export declare interface UserExperience {
   /** Experience's company */
   company: string
   /** Experience's description */
@@ -14,24 +14,24 @@ declare interface UserExperience {
   /** Experience's end date */
   endDate: string
 }
-declare interface UserInstantMessaging {
+export declare interface UserInstantMessaging {
   /** Instant Messaging contact's type */
   imType: 'skype' | 'gtalk' | 'yahoo' | 'msn' | 'other'
   /** Instant Messaging contact */
   imId: string | null
 }
-declare interface UserUrl {
+export declare interface UserUrl {
   /** Website's url */
   url: string | null
 }
-declare interface UserPhone {
+export declare interface UserPhone {
   /** Phone number's type */
   phoneType: 'work' | 'home' | 'other'
   /** Phone number */
   phoneNumber: string
 }
 
-declare interface UserPartial {
+export declare interface UserPartial {
   /** User's id */
   id: string
   /** API link to load the user's data */

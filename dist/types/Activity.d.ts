@@ -1,48 +1,48 @@
-export declare enum ActivityType {
+export declare const enum ActivityType {
     /** Activity posted by a user, without documents or link attached **/
-    'DEFAULT_ACTIVITY',
+    'DEFAULT_ACTIVITY' = "DEFAULT_ACTIVITY",
     /** Activity posted when a space is created. It contains the space's description and the number of members **/
-    'SPACE_ACTIVITY',
+    'SPACE_ACTIVITY' = "SPACE_ACTIVITY",
     /** Activity posted when a user creates an activity in a space **/
-    'USER_ACTIVITIES_FOR_SPACE',
+    'USER_ACTIVITIES_FOR_SPACE' = "USER_ACTIVITIES_FOR_SPACE",
     /** Activity with a link attachement **/
-    'LINK_ACTIVITY',
+    'LINK_ACTIVITY' = "LINK_ACTIVITY",
     /** Activity for contents sharing in a space **/
-    'sharecontents:spaces',
+    'sharecontents:spaces' = "sharecontents:spaces",
     /** Activity automatically posted the first time a user updates his/her profile **/
-    'USER_PROFILE_ACTIVITY',
+    'USER_PROFILE_ACTIVITY' = "USER_PROFILE_ACTIVITY",
     /** Activity with document posted via the Share feature of the mobile application **/
-    'DOC_ACTIVITY',
+    'DOC_ACTIVITY' = "DOC_ACTIVITY",
     /** Activity with documents attached **/
-    'files:spaces',
+    'files:spaces' = "files:spaces",
     /** Activity automatically posted when a document is shared in a space **/
-    'sharefiles:spaces',
+    'sharefiles:spaces' = "sharefiles:spaces",
     /** Activity automatically posted when a content is created **/
-    'contents:spaces',
+    'contents:spaces' = "contents:spaces",
     /** Activity automatically posted when a new event is created **/
-    'cs-calendar:spaces',
+    'cs-calendar:spaces' = "cs-calendar:spaces",
     /** Activity automatically posted when a new forum topic or post is created **/
-    'ks-forum:spaces',
+    'ks-forum:spaces' = "ks-forum:spaces",
     /** Activity automatically posted when a new question or answer is created **/
-    'ks-answer:spaces',
+    'ks-answer:spaces' = "ks-answer:spaces",
     /** Activity automatically posted when a new poll is created **/
-    'ks-poll:spaces',
+    'ks-poll:spaces' = "ks-poll:spaces",
     /** Activity automatically posted when a new wiki page is created in a space wiki **/
-    'ks-wiki:spaces',
+    'ks-wiki:spaces' = "ks-wiki:spaces",
     /** Activity automatically posted the first time a user is getting connected to another one, containing the number of relations **/
-    'USER_ACTIVITIES_FOR_RELATIONSHIP',
+    'USER_ACTIVITIES_FOR_RELATIONSHIP' = "USER_ACTIVITIES_FOR_RELATIONSHIP",
     /** Comment posted when an event is update **/
-    'CALENDAR_ACTIVITY',
+    'CALENDAR_ACTIVITY' = "CALENDAR_ACTIVITY",
     /** Comment posted when a user updates his/her profile **/
-    'exosocial:people',
+    'exosocial:people' = "exosocial:people",
     /** Comment posted when a member joins/leaves a space **/
-    'exosocial:spaces',
+    'exosocial:spaces' = "exosocial:spaces",
     /** Comment posted when a poll is updated **/
-    'poll:spaces',
+    'poll:spaces' = "poll:spaces",
     /** Comment automatically posted when two users are getting connected **/
-    'USER_COMMENTS_ACTIVITY_FOR_RELATIONSHIP',
+    'USER_COMMENTS_ACTIVITY_FOR_RELATIONSHIP' = "USER_COMMENTS_ACTIVITY_FOR_RELATIONSHIP",
     /** Activity post when two user are connected together **/
-    'exosocial:relationship'
+    'exosocial:relationship' = "exosocial:relationship"
 }
 export declare interface Activity {
     /** Activity's id */

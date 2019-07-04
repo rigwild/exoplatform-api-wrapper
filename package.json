@@ -1,6 +1,6 @@
 {
   "name": "exoplatform-api-wrapper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A quick eXo Platform API wrapper",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
