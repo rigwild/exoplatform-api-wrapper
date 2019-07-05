@@ -8,6 +8,16 @@
     "lib": "src",
     "test": "test"
   },
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node test/_setup.ts --before && ava --verbose && ts-node test/_setup.ts --after"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.12",
+    "ava": "^2.1.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  },
   "homepage": "https://github.com/rigwild/exoplatform-api-wrapper#readme",
   "bugs": {
     "url": "https://github.com/rigwild/exoplatform-api-wrapper/issues"
@@ -16,21 +26,20 @@
     "type": "git",
     "url": "https://github.com/rigwild/exoplatform-api-wrapper.git"
   },
-  "scripts": {
-    "build": "tsc",
-    "test": "node test/index.js"
-  },
   "keywords": [
     "eXo Platform",
     "API wrapper"
   ],
   "author": "rigwild <contact@asauvage.fr> (https://asauvage.fr)",
   "license": "MIT",
-  "devDependencies": {
-    "@types/dotenv": "^6.1.1",
-    "@types/node": "^12.0.10",
-    "dotenv": "^8.0.0",
-    "typescript": "^3.5.2"
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "contributors": [
     "Minigugus (https://github.com/Minigugus)"

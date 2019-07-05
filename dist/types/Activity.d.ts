@@ -81,7 +81,7 @@ export declare interface Activity {
     /** Activity's last update date */
     updateDate: string;
     /** Activity's stream data (where the data is) */
-    activityStream: {
+    activityStream?: {
         /** Type of activity stream it was published on (user, space ...) */
         type: string;
         /** Activity stream's id */

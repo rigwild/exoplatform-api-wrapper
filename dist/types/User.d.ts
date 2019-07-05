@@ -50,7 +50,7 @@ export declare interface UserPartial {
     /** API link to load the user's avatar */
     avatar: string | null;
     /** User's phone numbers */
-    phones: UserPhone[] | undefined;
+    phones?: UserPhone[];
     /** User's work experience */
     experiences: UserExperience[];
     /** User's current work position */
