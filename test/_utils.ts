@@ -1,21 +1,9 @@
-import { resolve } from 'path'
-import { ExecutionContext } from 'ava'
+import { ExecutionContext, TestInterface } from 'ava'
 
 import ExoPlatformWrapper from '../src'
 import { Space } from '../src/types/Space'
-import { Activity } from '../src/types/Activity'
+import { Activity, Comment } from '../src/types/Activity'
 import { EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL } from './_config'
-
-export const setupFile = resolve(__dirname, 'testSetup.json')
-export const randomStr = (length = 6) => [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
-
-export const login = async () => {
-  const exoWrapper = new ExoPlatformWrapper(EXO_HOSTNAME, EXO_PATH, EXO_SECURE_PROTOCOL)
-  await exoWrapper.login(EXO_USERNAME, EXO_PASSWORD)
-  return exoWrapper
-}
-
-type AnyKey = { [key: string]: any }
 
 export type ExportedTest = [
   /** Test name */
@@ -23,24 +11,24 @@ export type ExportedTest = [
   /** Test execution context */
   (t: ExecutionContext<TestContext>) => void
 ]
-export interface SetupFile {
-  space: {
-    RANDOM_ID: string
-    displayName: string
-    description: string | null
-  }
-}
-export interface TestContext extends AnyKey {
+export interface TestContext {
   exoWrapper: ExoPlatformWrapper
-  setup: SetupFile
+  /** Pre-test setup */
+  setup: {
+    RANDOM_ID: string
+  }
+  /** Any data passed from test to test */
   passedData: {
     space: Space
     activity: Activity
-  } & AnyKey
+    comment: Comment
+  }
 }
 
-export const loadTestContext = async (t: any) => {
-  t.context.setup = await import(setupFile)
-  t.context.exoWrapper = await login()
-  t.context.passedData = {}
+const randomStr = (length = 6) => [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
+export const loadTestContext = async (t: ExecutionContext<TestContext>) => {
+  t.context.setup = { RANDOM_ID: randomStr() }
+  t.context.exoWrapper = new ExoPlatformWrapper(EXO_HOSTNAME, EXO_PATH, EXO_SECURE_PROTOCOL)
+  await t.context.exoWrapper.login(EXO_USERNAME, EXO_PASSWORD)
+  t.context.passedData = <any>{}
 }

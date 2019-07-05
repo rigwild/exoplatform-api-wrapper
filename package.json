@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "ts-node test/_setup.ts --before && ava --verbose && ts-node test/_setup.ts --after"
+    "test": "ava --verbose"
   },
   "devDependencies": {
     "@types/node": "^12.0.12",

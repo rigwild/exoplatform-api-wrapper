@@ -154,7 +154,7 @@ class ExoPlatformWrapper {
      * @returns Activity content
      * @throws {Error} Unknown activity or no permission to delete
      */
-    delete: (activityId: string) =>
+    remove: (activityId: string) =>
       this.requestAuthed<Activity>(`/social/activities/${activityId}`, null, 'DELETE'),
 
 
@@ -224,7 +224,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown comment or no permission to edit
        */
       edit: (commentId: string, message: string) =>
-        this.requestAuthed<Comment>(`/social/comments/comment${commentId}`, { title: message }, 'PUT'),
+        this.requestAuthed<Comment>(`/social/comments/comment${commentId.replace('comment', '')}`, { title: message }, 'PUT'),
 
       /**
        * Delete a comment.
@@ -234,7 +234,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown comment or no permission to delete the comment
        */
       remove: (commentId: string) =>
-        this.requestAuthed<Comment>(`/social/comments/comment${commentId}`, null, 'DELETE'),
+        this.requestAuthed<Comment>(`/social/comments/comment${commentId.replace('comment', '')}`, null, 'DELETE'),
     }
   }
 

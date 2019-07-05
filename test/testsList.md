@@ -1,21 +1,21 @@
-#### ACTIVITY
+#### Activity
  - [ ] `readStream = () => {}`
  - [x] `read = (activityId: string) => {}`
  - [x] `edit = (activityId: string, message: string) => {}`
- - [ ] `delete = (activityId: string) => {}`
+ - [x] `delete = (activityId: string) => {}`
 
-#### LIKES
- - [ ] `list = (activityId: string) => {}`
- - [ ] `add = (activityId: string) => {}`
- - [ ] `remove = (activityId: string, username: string | undefined = this.username || undefined) => {}`
+#### Likes
+ - [x] `list = (activityId: string) => {}`
+ - [x] `add = (activityId: string) => {}`
+ - [x] `remove = (activityId: string, username: string | undefined = this.username || undefined) => {}`
 
-#### COMMENTS
- - [ ] `list = (activityId: string) => {}`
- - [ ] `add = (activityId: string, message: string) => {}`
- - [ ] `edit = (commentId: string, message: string) => {}`
- - [ ] `remove = (commentId: string) => {}`
+#### Comments
+ - [x] `list = (activityId: string) => {}`
+ - [x] `add = (activityId: string, message: string) => {}`
+ - [x] `edit = (commentId: string, message: string) => {}`
+ - [x] `remove = (commentId: string) => {}`
 
-#### SPACE
+#### Space
  - [x] `create = (spaceData: SpacePartial) => {}`
  - [x] `edit = (spaceId: string, spaceData: SpacePartial) => {}`
  - [x] `getData = (spaceId: string) => {}`
@@ -23,6 +23,6 @@
  - [ ] `readStream = (spaceId: string) => {}`
  - [x] `publish = (spaceId: string, message: string) => {}`
 
-#### USER
+#### User
  - [ ] `readStream = (username: string | undefined = this.username || undefined) => {}`
  - [ ] `publish = (message: string) => {}`
