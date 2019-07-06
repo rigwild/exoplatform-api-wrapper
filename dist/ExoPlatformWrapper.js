@@ -48,7 +48,7 @@ class ExoPlatformWrapper {
              * @returns Activity content
              * @throws {Error} Unknown activity or no permission to delete
              */
-            delete: (activityId) => this.requestAuthed(`/social/activities/${activityId}`, null, 'DELETE'),
+            remove: (activityId) => this.requestAuthed(`/social/activities/${activityId}`, null, 'DELETE'),
             /** Operations related to an activity's likes */
             like: {
                 /**
@@ -104,7 +104,7 @@ class ExoPlatformWrapper {
                  * @returns Comment content
                  * @throws {Error} Unknown comment or no permission to edit
                  */
-                edit: (commentId, message) => this.requestAuthed(`/social/comments/comment${commentId}`, { title: message }, 'PUT'),
+                edit: (commentId, message) => this.requestAuthed(`/social/comments/comment${commentId.replace('comment', '')}`, { title: message }, 'PUT'),
                 /**
                  * Delete a comment.
                  * Must have write-access.
@@ -112,7 +112,7 @@ class ExoPlatformWrapper {
                  * @returns Comment content
                  * @throws {Error} Unknown comment or no permission to delete the comment
                  */
-                remove: (commentId) => this.requestAuthed(`/social/comments/comment${commentId}`, null, 'DELETE'),
+                remove: (commentId) => this.requestAuthed(`/social/comments/comment${commentId.replace('comment', '')}`, null, 'DELETE'),
             }
         };
         /** Operations related to a space's stream activity */
@@ -176,7 +176,7 @@ class ExoPlatformWrapper {
              * @returns Activities list
              * @throws {Error} Unknown user or no permission to read
              */
-            readStream: (username = this.username || undefined) => this.requestAuthed(`/social/users/${username}/activities`),
+            readStream: (username = this.username) => this.requestAuthed(`/social/users/${username}/activities`),
             /**
              * publish on a user's activity stream.
              * Can only be your own profile.
@@ -223,12 +223,16 @@ class ExoPlatformWrapper {
                     if (res.statusCode && res.statusCode > 400)
                         reject(new Error(`${res.statusCode} - ${text}`));
                     // Try to parse JSON output
-                    try {
-                        resolve(JSON.parse(text));
+                    if (text) {
+                        try {
+                            resolve(JSON.parse(text));
+                        }
+                        catch {
+                            reject(new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`));
+                        }
                     }
-                    catch {
-                        reject(new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`));
-                    }
+                    else
+                        resolve();
                 });
             });
             req.on('error', reject);

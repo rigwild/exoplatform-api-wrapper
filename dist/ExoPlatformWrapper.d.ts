@@ -76,7 +76,7 @@ declare class ExoPlatformWrapper {
          * @returns Activity content
          * @throws {Error} Unknown activity or no permission to delete
          */
-        delete: (activityId: string) => Promise<Activity>;
+        remove: (activityId: string) => Promise<Activity>;
         /** Operations related to an activity's likes */
         like: {
             /**
@@ -210,7 +210,7 @@ declare class ExoPlatformWrapper {
          * @returns Activities list
          * @throws {Error} Unknown user or no permission to read
          */
-        readStream: (username?: string | undefined) => Promise<import("./types/ApiResponse").ApiResponseList<{
+        readStream: (username?: string | null) => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**

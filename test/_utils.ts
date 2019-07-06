@@ -3,7 +3,7 @@ import { ExecutionContext, TestInterface } from 'ava'
 import ExoPlatformWrapper from '../src'
 import { Space } from '../src/types/Space'
 import { Activity, Comment } from '../src/types/Activity'
-import { EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL } from './_config'
+import { EXO_HOSTNAME, EXO_PATH, EXO_SECURE_PROTOCOL } from './_config'
 
 export type ExportedTest = [
   /** Test name */
@@ -21,6 +21,7 @@ export interface TestContext {
   passedData: {
     space: Space
     activity: Activity
+    userActivity: Activity
     comment: Comment
   }
 }
@@ -29,6 +30,5 @@ const randomStr = (length = 6) => [...Array(length)].map(() => Math.random().toS
 export const loadTestContext = async (t: ExecutionContext<TestContext>) => {
   t.context.setup = { RANDOM_ID: randomStr() }
   t.context.exoWrapper = new ExoPlatformWrapper(EXO_HOSTNAME, EXO_PATH, EXO_SECURE_PROTOCOL)
-  await t.context.exoWrapper.login(EXO_USERNAME, EXO_PASSWORD)
   t.context.passedData = <any>{}
 }

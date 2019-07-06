@@ -67,12 +67,15 @@ class ExoPlatformWrapper {
           if (res.statusCode && res.statusCode > 400)
             reject(new Error(`${res.statusCode} - ${text}`))
           // Try to parse JSON output
-          try {
-            resolve(JSON.parse(text))
+          if (text) {
+            try {
+              resolve(JSON.parse(text))
+            }
+            catch {
+              reject(new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`))
+            }
           }
-          catch {
-            reject(new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`))
-          }
+          else resolve()
         })
       })
       req.on('error', reject)
@@ -311,7 +314,7 @@ class ExoPlatformWrapper {
      * @returns Activities list
      * @throws {Error} Unknown user or no permission to read
      */
-    readStream: (username: string | undefined = this.username || undefined) =>
+    readStream: (username: string | null = this.username) =>
       this.requestAuthed<ApiActivitiesList>(`/social/users/${username}/activities`),
 
     /**
