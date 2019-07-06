@@ -1,18 +1,63 @@
 import anyTest, { TestInterface } from 'ava'
 
-import { TestContext, loadTestContext } from './_utils'
+import ExoPlatformWrapper from '../src'
+import { Space } from '../src/types/Space'
 import { SpaceSubscription, SpaceVisibility } from '../src/types/Space'
-import { Activity } from '../src/types/Activity'
-import { EXO_USERNAME, EXO_PASSWORD } from './_config'
+import { Activity, Comment } from '../src/types/Activity'
+
+interface ConfigObject {
+  EXO_HOSTNAME: string
+  EXO_PATH: string
+  EXO_SECURE_PROTOCOL: string
+  EXO_USERNAME: string
+  EXO_PASSWORD: string
+}
 
 // Load a custom test object and load the tests setup
-export const test = anyTest as TestInterface<TestContext>
-test.before(loadTestContext)
-// test.beforeEach(async () => {
-//   await new Promise(res => setTimeout(res, 1000))
-// })
+const test = anyTest as TestInterface<{
+  exoWrapper: ExoPlatformWrapper
+  /** Pre-test setup */
+  setup: {
+    RANDOM_ID: string
+    config: ConfigObject
+  }
+  /** Any data passed from test to test */
+  passedData: {
+    space: Space
+    activity: Activity
+    userActivity: Activity
+    comment: Comment
+  }
+}>
 
-test.serial('Login to the platform', t => t.notThrowsAsync(t.context.exoWrapper.login(EXO_USERNAME, EXO_PASSWORD)))
+
+const randomStr = (length = 6) => [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
+const loadConfig = () => {
+  let missing = []
+  if (!process.env.EXO_HOSTNAME) missing.push('EXO_HOSTNAME')
+  if (!process.env.EXO_PATH) missing.push('EXO_PATH')
+  if (!process.env.EXO_USERNAME) missing.push('EXO_USERNAME')
+  if (!process.env.EXO_PASSWORD) missing.push('EXO_PASSWORD')
+  if (!process.env.EXO_SECURE_PROTOCOL) missing.push('EXO_SECURE_PROTOCOL')
+  if (missing.length > 0) throw new Error(`Missing configuration environment variables: ${missing}.`)
+  const { EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL } = process.env
+  return <ConfigObject>{ EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL }
+}
+
+// Hook to configure tests context and load configuration
+test.before(t => {
+  const config = loadConfig()
+  t.context.setup = {
+    RANDOM_ID: randomStr(),
+    config
+  }
+  t.context.exoWrapper = new ExoPlatformWrapper(config.EXO_HOSTNAME, config.EXO_PATH, config.EXO_SECURE_PROTOCOL)
+  t.context.passedData = <any>{}
+})
+
+
+test.serial('Login to the platform', t =>
+  t.notThrowsAsync(t.context.exoWrapper.login(t.context.setup.config.EXO_USERNAME, t.context.setup.config.EXO_PASSWORD)))
 
 // SPACE: `create = (spaceData: SpacePartial) => {}`
 test.serial('Create a space', async t => {

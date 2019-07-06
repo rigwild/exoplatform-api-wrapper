@@ -16,7 +16,7 @@ class ExoPlatformWrapper {
   /** Path to the eXo REST API, `/rest` by default */
   exoPath: string = '/rest'
   /** SSL protocol to use (don't set if you don't know what is it!) */
-  exoSecureProtocol?: string
+  exoSecureProtocol?: RequestOptions['secureProtocol']
 
   /**
    * Create a bot instance
@@ -24,7 +24,7 @@ class ExoPlatformWrapper {
    * @param exoPath Path to the eXo REST API, `/rest` by default
    * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what is it!)
    */
-  constructor(exoHostname: string, exoPath: string = '/rest', exoSecureProtocol?: string) {
+  constructor(exoHostname: string, exoPath: string = '/rest', exoSecureProtocol?: RequestOptions['secureProtocol']) {
     this.exoHostname = exoHostname
     this.exoPath = exoPath
     this.exoSecureProtocol = exoSecureProtocol
