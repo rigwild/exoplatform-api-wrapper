@@ -35,10 +35,8 @@ const randomStr = (length = 6) => [...Array(length)].map(() => Math.random().toS
 const loadConfig = () => {
   let missing = []
   if (!process.env.EXO_HOSTNAME) missing.push('EXO_HOSTNAME')
-  if (!process.env.EXO_PATH) missing.push('EXO_PATH')
   if (!process.env.EXO_USERNAME) missing.push('EXO_USERNAME')
   if (!process.env.EXO_PASSWORD) missing.push('EXO_PASSWORD')
-  if (!process.env.EXO_SECURE_PROTOCOL) missing.push('EXO_SECURE_PROTOCOL')
   if (missing.length > 0) throw new Error(`Missing configuration environment variables: ${missing}.`)
   const { EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL } = process.env
   return <ConfigObject>{ EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL }
