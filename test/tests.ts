@@ -72,6 +72,13 @@ test.serial('Create a space', async t => {
   t.context.passedData.space = space
 })
 
+// SPACE: `list = () => {}`
+test.serial('List available spaces', async t => {
+  const { spaces } = await t.context.exoWrapper.space.list()
+  t.true(spaces.length > 0)
+  t.truthy(spaces.find(x => x.displayName))
+})
+
 // SPACE: `getData = (spaceId: string) => {}`
 test.serial('Get space data', async t => {
   const space = await t.context.exoWrapper.space.getData(t.context.passedData.space.id)

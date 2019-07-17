@@ -1,6 +1,6 @@
 import https, { RequestOptions } from 'https'
 import { Activity, Comment } from './types/Activity'
-import { ApiActivitiesList, ApiCommentsList, ApiLikesList } from './types/ApiResponse'
+import { ApiActivitiesList, ApiCommentsList, ApiLikesList, ApiSpacesList } from './types/ApiResponse'
 import msgId from './msgId'
 import { Space, SpacePartial } from './types/Space'
 
@@ -243,6 +243,12 @@ class ExoPlatformWrapper {
 
   /** Operations related to a space's stream activity */
   space = {
+    /**
+     * List available spaces.
+     */
+    list: () =>
+      this.requestAuthed<ApiSpacesList>(`/social/spaces`),
+
     /**
      * Create a space.
      * Must have write-access.
