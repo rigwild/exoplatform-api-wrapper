@@ -1,3 +1,6 @@
 tsconfig.json
 src
 test
+docs
+.travis.yml
+node_modules
