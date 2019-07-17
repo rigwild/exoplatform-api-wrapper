@@ -10,13 +10,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "doc": "typedoc --out docs src",
+    "doc": "git checkout gh-pages && rm -rf assets  classes  enums  globals.html  index.html  interfaces  modules && git checkout master -- src && typedoc --out . src && rm -rf src",
     "test": "ava --verbose"
   },
   "devDependencies": {
     "@types/node": "^12.0.12",
     "ava": "^2.1.0",
     "ts-node": "^8.3.0",
+    "typedoc": "^0.14.2",
     "typescript": "^3.5.2"
   },
   "homepage": "https://github.com/rigwild/exoplatform-api-wrapper#readme",
