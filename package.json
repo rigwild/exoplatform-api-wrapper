@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "doc": "rm -rf docs && typedoc --out docs src",
+    "doc": "rm -rf docs && typedoc --out docs src && touch docs/.nojekyll",
     "test": "ava --verbose"
   },
   "devDependencies": {
