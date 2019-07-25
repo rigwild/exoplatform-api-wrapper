@@ -58,7 +58,7 @@ npm run test
 The author of this library is not affiliated in any way with eXo Platform.
 
 ## Contributing
-If you found a bug or want any features not available yet, feel free to open an [issue](https://github.com/rigwild/exoplatform-api-wrapper/issue) documentating the problem.
+If you found a bug or want any features not available yet, feel free to open an [issue](https://github.com/rigwild/exoplatform-api-wrapper/issues) documentating the problem.
 
 You may also contribute to the project by opening a [Pull Request](https://github.com/rigwild/exoplatform-api-wrapper/pulls).
 

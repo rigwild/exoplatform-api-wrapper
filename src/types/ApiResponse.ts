@@ -11,3 +11,4 @@ export declare type ApiSpacesList = ApiResponseList<{ spaces: Space[] }>
 export declare type ApiActivitiesList = ApiResponseList<{ activities: Activity[] }>
 export declare type ApiCommentsList = ApiResponseList<{ comments: Comment[] }>
 export declare type ApiLikesList = ApiResponseList<{ likes: User[] }>
+export declare type ApiUsersList = ApiResponseList<{ users: User[] }>
