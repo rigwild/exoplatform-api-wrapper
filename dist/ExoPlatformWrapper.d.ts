@@ -49,9 +49,11 @@ declare class ExoPlatformWrapper {
     activity: {
         /**
          * Get list of activities.
+         * @param limit Amount of content to fetch
+         * @param offset Offset for the content fetched
          * @returns Activities list
          */
-        readStream: () => Promise<import("./types/ApiResponse").ApiResponseList<{
+        readStream: (limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**
@@ -83,10 +85,12 @@ declare class ExoPlatformWrapper {
              * Get activity likers.
              * Must have read-access.
              * @param activityId Id of the targeted activity
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
              * @returns Activity likers
              * @throws {Error} Unknown activity or no permission to read
              */
-            list: (activityId: string) => Promise<import("./types/ApiResponse").ApiResponseList<{
+            list: (activityId: string, limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
                 likes: import("./types/User").User[];
             }>>;
             /**
@@ -113,10 +117,12 @@ declare class ExoPlatformWrapper {
              * Get activity comments.
              * Must have read-access.
              * @param activityId Id of the targeted activity
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
              * @returns Activity comments
              * @throws {Error} Unknown activity or no permission to read
              */
-            list: (activityId: string) => Promise<import("./types/ApiResponse").ApiResponseList<{
+            list: (activityId: string, limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
                 comments: Comment[];
             }>>;
             /**
@@ -149,6 +155,14 @@ declare class ExoPlatformWrapper {
     };
     /** Operations related to a space's stream activity */
     space: {
+        /**
+         * List available spaces.
+         * @param limit Amount of content to fetch
+         * @param offset Offset for the content fetched
+         */
+        list: (limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
+            spaces: Space[];
+        }>>;
         /**
          * Create a space.
          * Must have write-access.
@@ -186,10 +200,12 @@ declare class ExoPlatformWrapper {
          * Read a spaces's activity stream.
          * Must have read-access.
          * @param spaceId Id of the targeted space
+         * @param limit Amount of content to fetch
+         * @param offset Offset for the content fetched
          * @returns List of publications
          * @throws {Error} Unknown space or no permission to read
          */
-        readStream: (spaceId: string) => Promise<import("./types/ApiResponse").ApiResponseList<{
+        readStream: (spaceId: string, limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**
@@ -205,12 +221,23 @@ declare class ExoPlatformWrapper {
     /** Operations related to a user's stream activity */
     user: {
         /**
+         * List users.
+         * @param limit Amount of content to fetch
+         * @param offset Offset for the content fetched
+         * @returns Users list
+         */
+        list: (limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
+            users: import("./types/User").User[];
+        }>>;
+        /**
          * Read a user's activity stream.
          * @param username Id of the targeted user. Defaults to current logged in user
+         * @param limit Amount of content to fetch
+         * @param offset Offset for the content fetched
          * @returns Activities list
          * @throws {Error} Unknown user or no permission to read
          */
-        readStream: (username?: string | null) => Promise<import("./types/ApiResponse").ApiResponseList<{
+        readStream: (username?: string | null, limit?: number, offset?: number) => Promise<import("./types/ApiResponse").ApiResponseList<{
             activities: Activity[];
         }>>;
         /**

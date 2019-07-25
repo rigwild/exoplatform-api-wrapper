@@ -23,9 +23,11 @@ class ExoPlatformWrapper {
         this.activity = {
             /**
              * Get list of activities.
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
              * @returns Activities list
              */
-            readStream: () => this.requestAuthed(`/social/activities`),
+            readStream: (limit = 20, offset = 0) => this.requestAuthed(`/social/activities?limit=${limit}&offset=${offset}`),
             /**
              * Get an activity.
              * Must have read-access.
@@ -55,10 +57,12 @@ class ExoPlatformWrapper {
                  * Get activity likers.
                  * Must have read-access.
                  * @param activityId Id of the targeted activity
+                 * @param limit Amount of content to fetch
+                 * @param offset Offset for the content fetched
                  * @returns Activity likers
                  * @throws {Error} Unknown activity or no permission to read
                  */
-                list: (activityId) => this.requestAuthed(`/social/activities/${activityId}/likes`),
+                list: (activityId, limit = 20, offset = 0) => this.requestAuthed(`/social/activities/${activityId}/likes?limit=${limit}&offset=${offset}`),
                 /**
                  * Like an activity.
                  * Must have read-access.
@@ -83,10 +87,12 @@ class ExoPlatformWrapper {
                  * Get activity comments.
                  * Must have read-access.
                  * @param activityId Id of the targeted activity
+                 * @param limit Amount of content to fetch
+                 * @param offset Offset for the content fetched
                  * @returns Activity comments
                  * @throws {Error} Unknown activity or no permission to read
                  */
-                list: (activityId) => this.requestAuthed(`/social/activities/${activityId}/comments`),
+                list: (activityId, limit = 20, offset = 0) => this.requestAuthed(`/social/activities/${activityId}/comments?limit=${limit}&offset=${offset}`),
                 /**
                  * Comment an activity.
                  * Must have read-access.
@@ -117,6 +123,12 @@ class ExoPlatformWrapper {
         };
         /** Operations related to a space's stream activity */
         this.space = {
+            /**
+             * List available spaces.
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
+             */
+            list: (limit = 20, offset = 0) => this.requestAuthed(`/social/spaces?limit=${limit}&offset=${offset}`),
             /**
              * Create a space.
              * Must have write-access.
@@ -154,10 +166,12 @@ class ExoPlatformWrapper {
              * Read a spaces's activity stream.
              * Must have read-access.
              * @param spaceId Id of the targeted space
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
              * @returns List of publications
              * @throws {Error} Unknown space or no permission to read
              */
-            readStream: (spaceId) => this.requestAuthed(`/social/spaces/${spaceId}/activities`),
+            readStream: (spaceId, limit = 20, offset = 0) => this.requestAuthed(`/social/spaces/${spaceId}/activities?limit=${limit}&offset=${offset}`),
             /**
              * Publish on a spaces's activity stream.
              * Must have write-access.
@@ -171,12 +185,21 @@ class ExoPlatformWrapper {
         /** Operations related to a user's stream activity */
         this.user = {
             /**
+             * List users.
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
+             * @returns Users list
+             */
+            list: (limit = 20, offset = 0) => this.requestAuthed(`/social/users?limit=${limit}&offset=${offset}`),
+            /**
              * Read a user's activity stream.
              * @param username Id of the targeted user. Defaults to current logged in user
+             * @param limit Amount of content to fetch
+             * @param offset Offset for the content fetched
              * @returns Activities list
              * @throws {Error} Unknown user or no permission to read
              */
-            readStream: (username = this.username) => this.requestAuthed(`/social/users/${username}/activities`),
+            readStream: (username = this.username, limit = 20, offset = 0) => this.requestAuthed(`/social/users/${username}/activities?limit=${limit}&offset=${offset}`),
             /**
              * publish on a user's activity stream.
              * Can only be your own profile.
