@@ -44,7 +44,7 @@ export declare interface UserPartial {
     /** User's full name */
     fullname: string;
     /** User's email */
-    email: string;
+    email?: string;
     /** User's gender */
     gender: 'male' | 'female' | null;
     /** API link to load the user's avatar */

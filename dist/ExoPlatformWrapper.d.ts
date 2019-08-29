@@ -11,15 +11,18 @@ declare class ExoPlatformWrapper {
     exoHostname: string;
     /** Path to the eXo REST API, `/rest` by default */
     exoPath: string;
-    /** SSL protocol to use (don't set if you don't know what is it!) */
+    /** SSL protocol to use (don't set if you don't know what it is!!) */
     exoSecureProtocol?: RequestOptions['secureProtocol'];
+    /** SSL ciphers to use (don't set if you don't know what it is!!) */
+    exoCiphers?: RequestOptions['ciphers'];
     /**
      * Create a bot instance
      * @param exoHostname Hostname of the API (don't include protocol or path)
      * @param exoPath Path to the eXo REST API, `/rest` by default
-     * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what is it!)
+     * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what it is!!)
+     * @param exoCiphers SSL ciphers to use (don't set if you don't know what it is!!)
      */
-    constructor(exoHostname: string, exoPath?: string, exoSecureProtocol?: RequestOptions['secureProtocol']);
+    constructor(exoHostname: string, exoPath?: string, exoSecureProtocol?: RequestOptions['secureProtocol'], exoCiphers?: RequestOptions['ciphers']);
     /**
      * Make an API call to eXo Platform configured API.
      * @param path Path to the API endpoint

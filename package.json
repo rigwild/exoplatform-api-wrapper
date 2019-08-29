@@ -15,11 +15,11 @@
     "test": "ava --verbose"
   },
   "devDependencies": {
-    "@types/node": "^12.6.6",
-    "ava": "^2.2.0",
+    "@types/node": "^12.7.2",
+    "ava": "^2.3.0",
     "ts-node": "^8.3.0",
-    "typedoc": "^0.14.2",
-    "typescript": "^3.5.3"
+    "typedoc": "^0.15.0",
+    "typescript": "^3.6.2"
   },
   "homepage": "https://github.com/rigwild/exoplatform-api-wrapper#readme",
   "bugs": {

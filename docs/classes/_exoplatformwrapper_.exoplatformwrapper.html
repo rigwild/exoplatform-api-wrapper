@@ -90,6 +90,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_exoplatformwrapper_.exoplatformwrapper.html#exociphers" class="tsd-kind-icon">exo<wbr>Ciphers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_exoplatformwrapper_.exoplatformwrapper.html#exohostname" class="tsd-kind-icon">exo<wbr>Hostname</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_exoplatformwrapper_.exoplatformwrapper.html#exopath" class="tsd-kind-icon">exo<wbr>Path</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_exoplatformwrapper_.exoplatformwrapper.html#exosecureprotocol" class="tsd-kind-icon">exo<wbr>Secure<wbr>Protocol</a></li>
@@ -122,13 +123,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Exo<wbr>Platform<wbr>Wrapper<span class="tsd-signature-symbol">(</span>exoHostname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, exoPath<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, exoSecureProtocol<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_exoplatformwrapper_.exoplatformwrapper.html" class="tsd-signature-type">ExoPlatformWrapper</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Exo<wbr>Platform<wbr>Wrapper<span class="tsd-signature-symbol">(</span>exoHostname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, exoPath<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, exoSecureProtocol<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, exoCiphers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_exoplatformwrapper_.exoplatformwrapper.html" class="tsd-signature-type">ExoPlatformWrapper</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L19">ExoPlatformWrapper.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L22">ExoPlatformWrapper.ts:22</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -158,7 +159,15 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> exoSecureProtocol: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>SSL protocol to use (don&#39;t set if you don&#39;t know what is it!)</p>
+											<p>SSL protocol to use (don&#39;t set if you don&#39;t know what it is!!)</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> exoCiphers: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>SSL ciphers to use (don&#39;t set if you don&#39;t know what it is!!)</p>
 										</div>
 									</div>
 								</li>
@@ -171,12 +180,27 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="exociphers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> exo<wbr>Ciphers</h3>
+					<div class="tsd-signature tsd-kind-icon">exo<wbr>Ciphers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L22">ExoPlatformWrapper.ts:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SSL ciphers to use (don&#39;t set if you don&#39;t know what it is!!)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="exohostname" class="tsd-anchor"></a>
 					<h3>exo<wbr>Hostname</h3>
 					<div class="tsd-signature tsd-kind-icon">exo<wbr>Hostname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L15">ExoPlatformWrapper.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L15">ExoPlatformWrapper.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -191,7 +215,7 @@
 					<div class="tsd-signature tsd-kind-icon">exo<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/rest&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L17">ExoPlatformWrapper.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L17">ExoPlatformWrapper.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -206,12 +230,12 @@
 					<div class="tsd-signature tsd-kind-icon">exo<wbr>Secure<wbr>Protocol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L19">ExoPlatformWrapper.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L20">ExoPlatformWrapper.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>SSL protocol to use (don&#39;t set if you don&#39;t know what is it!)</p>
+							<p>SSL protocol to use (don&#39;t set if you don&#39;t know what it is!!)</p>
 						</div>
 					</div>
 				</section>
@@ -221,7 +245,7 @@
 					<div class="tsd-signature tsd-kind-icon">password<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L12">ExoPlatformWrapper.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L12">ExoPlatformWrapper.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -236,7 +260,7 @@
 					<div class="tsd-signature tsd-kind-icon">username<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L9">ExoPlatformWrapper.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L9">ExoPlatformWrapper.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -258,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L106">ExoPlatformWrapper.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L112">ExoPlatformWrapper.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -306,7 +330,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L42">ExoPlatformWrapper.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L47">ExoPlatformWrapper.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -367,7 +391,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L93">ExoPlatformWrapper.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L99">ExoPlatformWrapper.ts:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -409,7 +433,7 @@
 					<div class="tsd-signature tsd-kind-icon">activity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L126">ExoPlatformWrapper.ts:126</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L132">ExoPlatformWrapper.ts:132</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -427,7 +451,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L153">ExoPlatformWrapper.ts:153</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L159">ExoPlatformWrapper.ts:159</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -465,7 +489,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L143">ExoPlatformWrapper.ts:143</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L149">ExoPlatformWrapper.ts:149</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -500,7 +524,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L133">ExoPlatformWrapper.ts:133</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L139">ExoPlatformWrapper.ts:139</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -542,7 +566,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L162">ExoPlatformWrapper.ts:162</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L168">ExoPlatformWrapper.ts:168</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -568,7 +592,7 @@
 						<div class="tsd-signature tsd-kind-icon">comment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L203">ExoPlatformWrapper.ts:203</a></li>
+								<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L209">ExoPlatformWrapper.ts:209</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -586,7 +610,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L224">ExoPlatformWrapper.ts:224</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L230">ExoPlatformWrapper.ts:230</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -629,7 +653,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L235">ExoPlatformWrapper.ts:235</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L241">ExoPlatformWrapper.ts:241</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -672,7 +696,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L213">ExoPlatformWrapper.ts:213</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L219">ExoPlatformWrapper.ts:219</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -723,7 +747,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L245">ExoPlatformWrapper.ts:245</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L251">ExoPlatformWrapper.ts:251</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -755,7 +779,7 @@
 						<div class="tsd-signature tsd-kind-icon">like<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L167">ExoPlatformWrapper.ts:167</a></li>
+								<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L173">ExoPlatformWrapper.ts:173</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -773,7 +797,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L187">ExoPlatformWrapper.ts:187</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L193">ExoPlatformWrapper.ts:193</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -808,7 +832,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L177">ExoPlatformWrapper.ts:177</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L183">ExoPlatformWrapper.ts:183</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -859,7 +883,7 @@
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L198">ExoPlatformWrapper.ts:198</a></li>
+											<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L204">ExoPlatformWrapper.ts:204</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -900,7 +924,7 @@
 					<div class="tsd-signature tsd-kind-icon">space<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L251">ExoPlatformWrapper.ts:251</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L257">ExoPlatformWrapper.ts:257</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -918,7 +942,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L267">ExoPlatformWrapper.ts:267</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L273">ExoPlatformWrapper.ts:273</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -953,7 +977,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L278">ExoPlatformWrapper.ts:278</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L284">ExoPlatformWrapper.ts:284</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -996,7 +1020,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L298">ExoPlatformWrapper.ts:298</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L304">ExoPlatformWrapper.ts:304</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1031,7 +1055,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L257">ExoPlatformWrapper.ts:257</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L263">ExoPlatformWrapper.ts:263</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1072,7 +1096,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L321">ExoPlatformWrapper.ts:321</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L327">ExoPlatformWrapper.ts:327</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1115,7 +1139,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L310">ExoPlatformWrapper.ts:310</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L316">ExoPlatformWrapper.ts:316</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1166,7 +1190,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L288">ExoPlatformWrapper.ts:288</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L294">ExoPlatformWrapper.ts:294</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1198,7 +1222,7 @@
 					<div class="tsd-signature tsd-kind-icon">user<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L326">ExoPlatformWrapper.ts:326</a></li>
+							<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L332">ExoPlatformWrapper.ts:332</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1216,7 +1240,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L333">ExoPlatformWrapper.ts:333</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L339">ExoPlatformWrapper.ts:339</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1258,7 +1282,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L354">ExoPlatformWrapper.ts:354</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L360">ExoPlatformWrapper.ts:360</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1293,7 +1317,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/f37fed2/src/ExoPlatformWrapper.ts#L344">ExoPlatformWrapper.ts:344</a></li>
+										<li>Defined in <a href="https://github.com/rigwild/exoplatform-api-wrapper/blob/9124d46/src/ExoPlatformWrapper.ts#L350">ExoPlatformWrapper.ts:350</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
@@ -1376,6 +1400,9 @@
 								<a href="_exoplatformwrapper_.exoplatformwrapper.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_exoplatformwrapper_.exoplatformwrapper.html#exociphers" class="tsd-kind-icon">exo<wbr>Ciphers</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_exoplatformwrapper_.exoplatformwrapper.html#exohostname" class="tsd-kind-icon">exo<wbr>Hostname</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -1429,6 +1456,7 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -1477,7 +1505,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>

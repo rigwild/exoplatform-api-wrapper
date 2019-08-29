@@ -45,7 +45,8 @@ You must configure the tests by setting the following environment variables.
 | `EXO_PATH` | eXo Platform API path | ❌ | `/rest` | `/exo/platform/rest` |
 | `EXO_USERNAME` | eXo Platform account username | ✅ || `myUser` |
 | `EXO_PASSWORD` | eXo Platform account password | ✅ || `myPassword` |
-| `EXO_SECURE_PROTOCOL` | HTTPS secure protocol to use (do not touch if you don't know what it is!) | ❌ | `undefined` | `TLSv1_method` |
+| `EXO_SECURE_PROTOCOL` | SSL protocol to use (do not touch if you don't know what it is!!) | ❌ | `undefined` | `TLSv1_method` |
+| `EXO_CIPHERS` | SSL ciphers to use (do not touch if you don't know what it is!!) | ❌ | `undefined` | `AES128-SHA` |
 
 Then, you can run the tests:
 ```sh

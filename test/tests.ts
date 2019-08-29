@@ -9,6 +9,7 @@ interface ConfigObject {
   EXO_HOSTNAME: string
   EXO_PATH: string
   EXO_SECURE_PROTOCOL: string
+  EXO_CIPHERS: string
   EXO_USERNAME: string
   EXO_PASSWORD: string
 }
@@ -38,8 +39,8 @@ const loadConfig = () => {
   if (!process.env.EXO_USERNAME) missing.push('EXO_USERNAME')
   if (!process.env.EXO_PASSWORD) missing.push('EXO_PASSWORD')
   if (missing.length > 0) throw new Error(`Missing configuration environment variables: ${missing}.`)
-  const { EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL } = process.env
-  return <ConfigObject>{ EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL }
+  const { EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL, EXO_CIPHERS } = process.env
+  return <ConfigObject>{ EXO_HOSTNAME, EXO_PATH, EXO_USERNAME, EXO_PASSWORD, EXO_SECURE_PROTOCOL, EXO_CIPHERS }
 }
 
 // Hook to configure tests context and load configuration
@@ -49,7 +50,7 @@ test.before(t => {
     RANDOM_ID: randomStr(),
     config
   }
-  t.context.exoWrapper = new ExoPlatformWrapper(config.EXO_HOSTNAME, config.EXO_PATH, config.EXO_SECURE_PROTOCOL)
+  t.context.exoWrapper = new ExoPlatformWrapper(config.EXO_HOSTNAME, config.EXO_PATH, config.EXO_SECURE_PROTOCOL, config.EXO_CIPHERS)
   t.context.passedData = <any>{}
 })
 
