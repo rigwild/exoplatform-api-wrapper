@@ -13,7 +13,11 @@ class ExoPlatformWrapper {
      * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what it is!!)
      * @param exoCiphers SSL ciphers to use (don't set if you don't know what it is!!)
      */
-    constructor(exoHostname, exoPath = '/rest', exoSecureProtocol, exoCiphers) {
+    constructor(exoHostname, exoPath = '/rest', 
+    // @ts-ignore
+    exoSecureProtocol, 
+    // @ts-ignore
+    exoCiphers) {
         /** eXo Platform username */
         this.username = null;
         /** eXo Platform password */
@@ -119,7 +123,7 @@ class ExoPlatformWrapper {
                  * @returns Comment content
                  * @throws {Error} Unknown comment or no permission to delete the comment
                  */
-                remove: (commentId) => this.requestAuthed(`/social/comments/comment${commentId.replace('comment', '')}`, null, 'DELETE'),
+                remove: (commentId) => this.requestAuthed(`/social/comments/comment${commentId.replace('comment', '')}`, null, 'DELETE')
             }
         };
         /** Operations related to a space's stream activity */
@@ -230,7 +234,9 @@ class ExoPlatformWrapper {
                 auth: `${this.username}:${this.password}`,
                 hostname: this.exoHostname,
                 port: 80,
+                // @ts-ignore
                 secureProtocol: this.exoSecureProtocol,
+                // @ts-ignore
                 ciphers: this.exoCiphers,
                 path: `${this.exoPath}${path}`,
                 method,
@@ -243,7 +249,7 @@ class ExoPlatformWrapper {
             }
             const req = http_1.default.request(options, res => {
                 let text = '';
-                res.on('data', d => text += d);
+                res.on('data', d => (text += d));
                 res.on('end', () => {
                     // There was an error
                     if (res.statusCode && res.statusCode > 400)

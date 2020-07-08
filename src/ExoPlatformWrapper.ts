@@ -17,8 +17,10 @@ class ExoPlatformWrapper {
   exoPath: string = '/rest'
 
   /** SSL protocol to use (don't set if you don't know what it is!!) */
+  // @ts-ignore
   exoSecureProtocol?: RequestOptions['secureProtocol']
   /** SSL ciphers to use (don't set if you don't know what it is!!) */
+  // @ts-ignore
   exoCiphers?: RequestOptions['ciphers']
 
   /**
@@ -28,7 +30,14 @@ class ExoPlatformWrapper {
    * @param exoSecureProtocol SSL protocol to use (don't set if you don't know what it is!!)
    * @param exoCiphers SSL ciphers to use (don't set if you don't know what it is!!)
    */
-  constructor(exoHostname: string, exoPath: string = '/rest', exoSecureProtocol?: RequestOptions['secureProtocol'], exoCiphers?: RequestOptions['ciphers']) {
+  constructor(
+    exoHostname: string,
+    exoPath: string = '/rest',
+    // @ts-ignore
+    exoSecureProtocol?: RequestOptions['secureProtocol'],
+    // @ts-ignore
+    exoCiphers?: RequestOptions['ciphers']
+  ) {
     this.exoHostname = exoHostname
     this.exoPath = exoPath
     this.exoSecureProtocol = exoSecureProtocol
@@ -55,7 +64,9 @@ class ExoPlatformWrapper {
         auth: `${this.username}:${this.password}`,
         hostname: this.exoHostname,
         port: 80,
+        // @ts-ignore
         secureProtocol: this.exoSecureProtocol,
+        // @ts-ignore
         ciphers: this.exoCiphers,
         path: `${this.exoPath}${path}`,
         method,
@@ -67,21 +78,20 @@ class ExoPlatformWrapper {
       }
       const req = http.request(options, res => {
         let text = ''
-        res.on('data', d => text += d)
+        res.on('data', d => (text += d))
         res.on('end', () => {
           // There was an error
-          if (res.statusCode && res.statusCode > 400)
-            reject(new Error(`${res.statusCode} - ${text}`))
+          if (res.statusCode && res.statusCode > 400) reject(new Error(`${res.statusCode} - ${text}`))
           // Try to parse JSON output
           if (text) {
             try {
               resolve(JSON.parse(text))
+            } catch {
+              reject(
+                new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`)
+              )
             }
-            catch {
-              reject(new Error(`Could not parse the API's response. Status code : ${res.statusCode} - Body content: ${text}`))
-            }
-          }
-          else resolve()
+          } else resolve()
         })
       })
       req.on('error', reject)
@@ -119,8 +129,7 @@ class ExoPlatformWrapper {
     if (checkCredentials) {
       try {
         await this.requestAuthed('/social/users/')
-      }
-      catch (error) {
+      } catch (error) {
         this.username = null
         this.password = null
         throw error
@@ -146,8 +155,7 @@ class ExoPlatformWrapper {
      * @returns Activity content
      * @throws {Error} Unknown activity or no permission to read
      */
-    read: (activityId: string) =>
-      this.requestAuthed<Activity>(`/social/activities/${activityId}`),
+    read: (activityId: string) => this.requestAuthed<Activity>(`/social/activities/${activityId}`),
 
     /**
      * Edit an activity.
@@ -165,9 +173,7 @@ class ExoPlatformWrapper {
      * @returns Activity content
      * @throws {Error} Unknown activity or no permission to delete
      */
-    remove: (activityId: string) =>
-      this.requestAuthed<Activity>(`/social/activities/${activityId}`, null, 'DELETE'),
-
+    remove: (activityId: string) => this.requestAuthed<Activity>(`/social/activities/${activityId}`, null, 'DELETE'),
 
     /** Operations related to an activity's likes */
     like: {
@@ -190,8 +196,7 @@ class ExoPlatformWrapper {
        * @returns Activity content
        * @throws {Error} Unknown activity or no permission to read
        */
-      add: (activityId: string) =>
-        this.requestAuthed<Activity>(`/social/activities/${activityId}/likes`, null, 'POST'),
+      add: (activityId: string) => this.requestAuthed<Activity>(`/social/activities/${activityId}/likes`, null, 'POST'),
 
       /**
        * Remove a like from an activity.
@@ -217,7 +222,9 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown activity or no permission to read
        */
       list: (activityId: string, limit: number = 20, offset: number = 0) =>
-        this.requestAuthed<ApiCommentsList>(`/social/activities/${activityId}/comments?limit=${limit}&offset=${offset}`),
+        this.requestAuthed<ApiCommentsList>(
+          `/social/activities/${activityId}/comments?limit=${limit}&offset=${offset}`
+        ),
 
       /**
        * Comment an activity.
@@ -239,7 +246,11 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown comment or no permission to edit
        */
       edit: (commentId: string, message: string) =>
-        this.requestAuthed<Comment>(`/social/comments/comment${commentId.replace('comment', '')}`, { title: message }, 'PUT'),
+        this.requestAuthed<Comment>(
+          `/social/comments/comment${commentId.replace('comment', '')}`,
+          { title: message },
+          'PUT'
+        ),
 
       /**
        * Delete a comment.
@@ -249,7 +260,7 @@ class ExoPlatformWrapper {
        * @throws {Error} Unknown comment or no permission to delete the comment
        */
       remove: (commentId: string) =>
-        this.requestAuthed<Comment>(`/social/comments/comment${commentId.replace('comment', '')}`, null, 'DELETE'),
+        this.requestAuthed<Comment>(`/social/comments/comment${commentId.replace('comment', '')}`, null, 'DELETE')
     }
   }
 
@@ -270,8 +281,7 @@ class ExoPlatformWrapper {
      * @returns Newly created space
      * @throws {Error} No permission to create a space or `displayName` already taken
      */
-    create: (spaceData: SpacePartial) =>
-      this.requestAuthed<Space>(`/social/spaces`, spaceData),
+    create: (spaceData: SpacePartial) => this.requestAuthed<Space>(`/social/spaces`, spaceData),
 
     /**
      * Edit a space data.
@@ -291,8 +301,7 @@ class ExoPlatformWrapper {
      * @returns Old space data
      * @throws {Error} No permission to delete the space
      */
-    remove: (spaceId: string) =>
-      this.requestAuthed<Space>(`/social/spaces/${spaceId}`, null, 'DELETE'),
+    remove: (spaceId: string) => this.requestAuthed<Space>(`/social/spaces/${spaceId}`, null, 'DELETE'),
 
     /**
      * Get a space's data.
@@ -301,8 +310,7 @@ class ExoPlatformWrapper {
      * @returns Space's data
      * @throws {Error} Unknown space or no permission to read
      */
-    getData: (spaceId: string) =>
-      this.requestAuthed<Space>(`/social/spaces/${spaceId}`),
+    getData: (spaceId: string) => this.requestAuthed<Space>(`/social/spaces/${spaceId}`),
 
     /**
      * Read a spaces's activity stream.
