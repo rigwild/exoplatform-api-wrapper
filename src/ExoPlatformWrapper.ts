@@ -1,4 +1,4 @@
-import https, { RequestOptions } from 'https'
+import http, { RequestOptions } from 'http'
 import { Activity, Comment } from './types/Activity'
 import { ApiActivitiesList, ApiCommentsList, ApiLikesList, ApiSpacesList, ApiUsersList } from './types/ApiResponse'
 import msgId from './msgId'
@@ -54,7 +54,7 @@ class ExoPlatformWrapper {
       let options: RequestOptions = {
         auth: `${this.username}:${this.password}`,
         hostname: this.exoHostname,
-        port: 443,
+        port: 80,
         secureProtocol: this.exoSecureProtocol,
         ciphers: this.exoCiphers,
         path: `${this.exoPath}${path}`,
@@ -65,7 +65,7 @@ class ExoPlatformWrapper {
         if (!options.headers) options.headers = {}
         options.headers['content-type'] = 'application/json'
       }
-      const req = https.request(options, res => {
+      const req = http.request(options, res => {
         let text = ''
         res.on('data', d => text += d)
         res.on('end', () => {
