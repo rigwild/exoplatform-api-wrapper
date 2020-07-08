@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { RequestOptions } from 'https';
+import { RequestOptions } from 'http';
 import { Activity, Comment } from './types/Activity';
 import { Space, SpacePartial } from './types/Space';
 declare class ExoPlatformWrapper {

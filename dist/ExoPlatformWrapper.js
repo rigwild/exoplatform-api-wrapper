@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const https_1 = __importDefault(require("https"));
+const http_1 = __importDefault(require("http"));
 const msgId_1 = __importDefault(require("./msgId"));
 class ExoPlatformWrapper {
     /**
@@ -229,7 +229,7 @@ class ExoPlatformWrapper {
             let options = {
                 auth: `${this.username}:${this.password}`,
                 hostname: this.exoHostname,
-                port: 443,
+                port: 80,
                 secureProtocol: this.exoSecureProtocol,
                 ciphers: this.exoCiphers,
                 path: `${this.exoPath}${path}`,
@@ -241,7 +241,7 @@ class ExoPlatformWrapper {
                     options.headers = {};
                 options.headers['content-type'] = 'application/json';
             }
-            const req = https_1.default.request(options, res => {
+            const req = http_1.default.request(options, res => {
                 let text = '';
                 res.on('data', d => text += d);
                 res.on('end', () => {
